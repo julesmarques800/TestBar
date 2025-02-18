@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EQUINOX - Catalogue des barres de CSO</title>
+    <style>
+        /* Réinitialisation basique */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        /* En-tête du site */
+        
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+        /* Barre du haut (numéro, connexion, etc.) */
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 20px;
+            font-size: 0.9rem;
+            background-color: #f8f8f8;
+        }
+        
+        .top-bar .phone-number {
+            color: #666;
+        }
+        
+        .top-bar .actions a {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        /* Logo + Navigation */
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-left img {
+            height: 40px;
+            /* Ajuste la hauteur selon votre logo */
+            margin-right: 10px;
+        }
+        
+        .brand {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+        }
+        
+        .tagline {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+        
+        nav ul li {
+            display: inline-block;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        nav ul li a:hover {
+            color: #f1631f;
+            /* Couleur hover */
+        }
+        /* Contenu principal */
+        
+        main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        main h1 {
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            color: #333;
+        }
+        /* Catalogue */
+        
+        .catalog {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .catalog-item {
+            width: 200px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #000;
+            padding: 10px;
+            transition: box-shadow 0.2s;
+        }
+        
+        .catalog-item:hover {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .catalog-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .catalog-item p {
+            font-size: 1rem;
+            text-align: center;
+            margin: 0;
+        }
+        /* Pied de page */
+        
+        footer {
+            background-color: #f8f8f8;
+            padding: 10px 20px;
+            text-align: center;
+            color: #666;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+        /* Responsivité basique */
+        
+        @media (max-width: 768px) {
+            nav ul {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- En-tête du site -->
+    <header>
+        <!-- Barre du haut -->
+        <div class="top-bar">
+            <div class="phone-number">+33 6 62 23 35 07</div>
+            <div class="actions">
+                <a href="#">Se connecter</a>
+                <a href="#">Contactez-nous</a>
+            </div>
+        </div>
+        <!-- Logo + Navigation -->
+        <div class="navbar">
+            <div class="navbar-left">
+                <!-- Logo -->
+                <img src="https://via.placeholder.com/80x40?text=LOGO" alt="EQUINOX">
+                <div>
+                    <div class="brand">EQUINOX</div>
+                    <div class="tagline">Créateur d'espaces équestres</div>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Notre équipe</a></li>
+                    <li><a href="#">Boxes</a></li>
+                    <li><a href="#">Gamme Élevage</a></li>
+                    <li><a href="#">Accessoires</a></li>
+                    <li><a href="#">Obstacles</a></li>
+                    <li><a href="#">Solution d'éclairage</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main>
+        <h1>Catalogue des barres de CSO</h1>
+        <div class="catalog">
+            <!-- Chaque élément du catalogue utilise l'image SVG réelle -->
+            <a class="catalog-item" href="config.html?model=1">
+                <img src="Bar_V1.svg" alt="Modèle 1">
+                <p>Modèle 1</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=2">
+                <img src="Bar_V2.svg" alt="Modèle 2">
+                <p>Modèle 2</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=3">
+                <img src="Bar_V3.svg" alt="Modèle 3">
+                <p>Modèle 3</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=4">
+                <img src="Bar_V4.svg" alt="Modèle 4">
+                <p>Modèle 4</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=5">
+                <img src="Bar_V5.svg" alt="Modèle 5">
+                <p>Modèle 5</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=6">
+                <img src="Bar_V6.svg" alt="Modèle 6">
+                <p>Modèle 6</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=7">
+                <img src="Bar_V7.svg" alt="Modèle 7">
+                <p>Modèle 7</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=8">
+                <img src="Bar_V8.svg" alt="Modèle 8">
+                <p>Modèle 8</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=9">
+                <img src="Bar_V9.svg" alt="Modèle 9">
+                <p>Modèle 9</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=10">
+                <img src="Bar_V10.svg" alt="Modèle 10">
+                <p>Modèle 10</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=11">
+                <img src="Bar_V11.svg" alt="Modèle 11">
+                <p>Modèle 11</p>
+            </a>
+            <a class="catalog-item" href="config.html?model=12">
+                <img src="Bar_V12.svg" alt="Modèle 12">
+                <p>Modèle 12</p>
+            </a>
+        </div>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        © 2025 EQUINOX - Créateur d'espaces équestres
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg26518"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="Bar_V1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview26520"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.76969697"
+     inkscape:cx="311.81102"
+     inkscape:cy="545.01968"
+     inkscape:window-width="2400"
+     inkscape:window-height="1271"
+     inkscape:window-x="2391"
+     inkscape:window-y="72"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs26515">
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-7-6-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-9-2-6"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-3-6-9"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-4-9-7"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-3-6-9-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-4-9-7-6"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-7-6-0-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-9-2-6-2"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-3-6-9-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-4-9-7-1"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-7-6-0-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-9-2-6-1"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-3-6-9-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-4-9-7-66"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Dot-6-4-7-6-0-7"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Dot"
+       markerWidth="5.6666665"
+       markerHeight="5.6666665"
+       viewBox="0 0 5.6666667 5.6666667"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5,0 C 5,2.76 2.76,5 0,5 -2.76,5 -5,2.76 -5,0 c 0,-2.76 2.3,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         id="Dot1-7-8-9-2-6-7"
+         sodipodi:nodetypes="sssss" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-3-6-9);paint-order:markers stroke fill"
+       id="path27054-3-6-46-9-6"
+       cx="178.0155"
+       cy="39.366249"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-3-6-9-6);paint-order:markers stroke fill"
+       id="path27054-3-6-46-9-6-8"
+       cx="178.01549"
+       cy="69.366249"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-3-6-9-5);paint-order:markers stroke fill"
+       id="path27054-3-6-46-9-6-9"
+       cx="178.01552"
+       cy="99.366249"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-3-6-9-8);paint-order:markers stroke fill"
+       id="path27054-3-6-46-9-6-6"
+       cx="178.01552"
+       cy="129.36626"
+       rx="6.53125"
+       ry="9.28125" />
+    <g
+       id="b1-s1">
+      <g
+         id="g24096"
+         transform="translate(-3.6116249,-7.4395667)">
+        <ellipse
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-7-6-0);paint-order:markers stroke fill"
+           id="path27054-3-6-4-8-3"
+           cx="181.0179"
+           cy="46.921432"
+           rx="6.53125"
+           ry="9.28125" />
+        <path
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.0332561;stroke-dasharray:none;stroke-opacity:0;paint-order:markers stroke fill"
+           d="m 31.075902,68.02693 149.961818,-30.39231 0.005,18.56653 -149.957363,30.3767 z"
+           id="1" />
+      </g>
+      <g
+         id="g24096-8"
+         transform="translate(-3.6116279,22.560433)">
+        <ellipse
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-7-6-0-5);paint-order:markers stroke fill"
+           id="path27054-3-6-4-8-3-4"
+           cx="181.0179"
+           cy="46.921432"
+           rx="6.53125"
+           ry="9.28125" />
+        <path
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.0332561;stroke-dasharray:none;stroke-opacity:0;paint-order:markers stroke fill"
+           d="m 31.075902,68.02693 149.961818,-30.39231 0.005,18.56653 -149.957363,30.3767 z"
+           id="b1-s1-1" />
+      </g>
+      <g
+         id="g24096-9"
+         transform="translate(-3.6116241,52.560433)">
+        <ellipse
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-7-6-0-2);paint-order:markers stroke fill"
+           id="path27054-3-6-4-8-3-1"
+           cx="181.0179"
+           cy="46.921432"
+           rx="6.53125"
+           ry="9.28125" />
+        <path
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.0332561;stroke-dasharray:none;stroke-opacity:0;paint-order:markers stroke fill"
+           d="m 31.075902,68.02693 149.961818,-30.39231 0.005,18.56653 -149.957363,30.3767 z"
+           id="b1-s1-4" />
+      </g>
+      <g
+         id="g24096-7"
+         transform="translate(-3.6116243,82.560434)">
+        <ellipse
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.03;stroke-dasharray:none;marker-mid:url(#Dot-6-4-7-6-0-7);paint-order:markers stroke fill"
+           id="path27054-3-6-4-8-3-3"
+           cx="181.0179"
+           cy="46.921432"
+           rx="6.53125"
+           ry="9.28125" />
+        <path
+           style="fill:#aa4400;stroke:#000000;stroke-width:0.0332561;stroke-dasharray:none;stroke-opacity:0;paint-order:markers stroke fill"
+           d="m 31.075902,68.02693 149.961818,-30.39231 0.005,18.56653 -149.957363,30.3767 z"
+           id="b1-s1-8" />
+      </g>
+    </g>
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-18-4-33"
+       cx="27.461582"
+       cy="159.85864"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-1-9-8-31"
+       cx="26.581249"
+       cy="160.19212"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-18-4"
+       cx="27.461582"
+       cy="69.858635"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-1-9-8"
+       cx="26.581249"
+       cy="70.192116"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-18-4-3"
+       cx="27.461575"
+       cy="99.858635"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-1-9-8-3"
+       cx="26.581249"
+       cy="100.19212"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-18-4-8"
+       cx="27.461582"
+       cy="129.85864"
+       rx="6.53125"
+       ry="9.28125" />
+    <ellipse
+       style="fill:#999999;stroke:#000000;stroke-width:0.1;stroke-dasharray:none;paint-order:markers stroke fill"
+       id="path27054-3-6-1-9-8-6"
+       cx="26.581249"
+       cy="130.19212"
+       rx="6.53125"
+       ry="9.28125" />
+  </g>
+</svg>
