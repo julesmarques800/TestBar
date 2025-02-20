@@ -121,31 +121,43 @@
         }
         
         .catalog-item {
-            width: 200px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #000;
+            width: 500px;
+            /* Taille plus appropriée pour les cartes */
+            height: 400px;
+            /* Ajustement de la hauteur */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            /* Meilleure répartition de l'espace */
+            text-align: center;
             padding: 10px;
-            transition: box-shadow 0.2s;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
         }
         
         .catalog-item:hover {
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            transform: scale(1.05);
         }
         
         .catalog-item img {
             width: 100%;
             height: auto;
+            object-fit: contain;
+            /* Évite la déformation */
             display: block;
             margin-bottom: 10px;
         }
         
         .catalog-item p {
-            font-size: 1rem;
-            text-align: center;
-            margin: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: auto;
+            /* Assure que le texte est bien en bas */
+            padding: 10px 0;
         }
         /* Pied de page */
         
