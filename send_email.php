@@ -64,6 +64,9 @@ try {
     $mail->Body = $email_body;
 
     // ✅ Envoi de l'email
+    $mail->SMTPDebug = 2;  // Mode debug (1 = erreurs, 2 = détails SMTP)
+    $mail->Debugoutput = 'html'; // Affichage en HTML
+
     $mail->send();
     echo "Votre demande de devis a été envoyée avec succès !";
 

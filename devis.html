@@ -123,7 +123,7 @@
                 cart
             };
 
-            fetch("send_email.php", {
+            fetch("sendhttp://localhost/TestBar/devis.html_email.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -140,6 +140,7 @@
                     alert("Une erreur est survenue lors de l'envoi.");
                 });
         }
+        document.addEventListener("DOMContentLoaded", loadOrderSummary);
     </script>
 </body>
 
