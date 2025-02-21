@@ -91,6 +91,7 @@
 
     <script>
         function loadOrderSummary() {
+            console.log("Chargement du résumé de commande...");
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             const orderDetails = document.getElementById("orderDetails");
             orderDetails.innerHTML = "";
