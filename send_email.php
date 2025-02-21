@@ -1,14 +1,18 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+// Activer l'affichage des erreurs pour le débogage
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// 🔹 Configuration CORS (doit être au début)
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(204); // Répondre aux requêtes OPTIONS sans exécuter le reste du code
+    exit;
+}
 
 // Vérifie si les données sont envoyées en JSON
 $data = json_decode(file_get_contents("php://input"), true);
@@ -58,8 +62,8 @@ $headers .= "Reply-To: $client_email\r\n";
 
 // 📌 Envoi de l'email
 if (mail($to, $subject, $message, $headers)) {
-    echo "Votre demande de devis a été envoyée avec succès !";
+    echo json_encode(["message" => "✅ Votre demande de devis a été envoyée avec succès !"]);
 } else {
-    echo "Erreur lors de l'envoi du message.";
+    echo json_encode(["message" => "❌ Erreur lors de l'envoi du message."]);
 }
 ?>
