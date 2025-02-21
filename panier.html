@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Panier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+        
+        .btn-remove {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-remove:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-update {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn-update:hover {
+            background-color: #0056b3;
+        }
+        
+        .color-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .color-sample {
+            width: 40px;
+            height: 20px;
+            margin: 2px;
+            border: 1px solid #000;
+        }
+        
+        .btn-devis {
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Votre Panier</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Modèle</th>
+                <th>Couleurs</th>
+                <th>Quantité</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="cartTableBody">
+            <!-- Contenu du panier généré dynamiquement -->
+        </tbody>
+    </table>
+
+    <br>
+    <a href="index.html" class="btn">Retour à l'accueil</a>
+    <a href="devis.html" class="btn-devis">Envoyer le devis</a>
+
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const tableBody = document.getElementById("cartTableBody");
+            tableBody.innerHTML = "";
+
+            cart.forEach((item, index) => {
+                let colorsHtml = item.colors.map(color => `<div class='color-sample' style='background-color:${color}'></div>`).join(" ");
+
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td><img src="svgs/Bar_V${item.model}.svg" alt="Barre ${item.model}" width="100"></td>
+                    <td>${item.model}</td>
+                    <td>
+                        <div class="color-box">
+                            ${colorsHtml}
+                        </div>
+                    </td>
+                    <td>
+                        <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;">
+                    </td>
+                    <td>
+                        <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
+                        <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function redirectToConfig(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let model = cart[index].model;
+            window.location.href = `config.html?model=${model}`;
+        }
+
+        function updateQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let newQty = parseInt(document.getElementById(`qty-${index}`).value);
+            if (newQty > 0) {
+                cart[index].quantity = newQty;
+                localStorage.setItem("cart", JSON.stringify(cart));
+                loadCart();
+            } else {
+                alert("La quantité doit être au moins 1");
+            }
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadCart();
+        }
+
+        document.addEventListener("DOMContentLoaded", loadCart);
+    </script>
+</body>
+
+</html>

@@ -41,6 +41,51 @@
             display: block;
             margin: 20px auto;
         }
+        
+        .button-container {
+            position: absolute;
+            top: 200px;
+            right: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+        
+        .btn-retour {
+            position: absolute;
+            top: 30px;
+            left: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 
@@ -48,6 +93,17 @@
     <h1>Configurateur de Barre CSO</h1>
     <div class="color-palette" id="colorPalette"></div>
     <div id="svgContainer"></div>
+
+    <div class="button-container">
+        <input type="number" id="quantity" min="1" value="1" style="padding: 5px; font-size: 16px; width: 60px; text-align: center;">
+        <button class="btn" onclick="addToCart()">Ajouter au Panier</button>
+        <a href="panier.html" class="btn">Voir le Panier</a>
+        <button class="btn btn-clear" onclick="clearCart()">Vider le Panier</button>
+    </div>
+
+    <a href="index.html" class="btn-retour">Retour à l'accueil</a>
+
+
 
     <script>
         const colors = [
@@ -111,7 +167,7 @@
             "b12-group1": ["b12-s1", "b12-s3", "b12-s5", "b12-s7", "b12-s9", "b12-s11", "b12-s13"], // Bleu foncé
             "b12-group2": ["b12-s2", "b12-s6", "b12-s8", "b12-s12"], // Orange
             "b12-group3": ["b12-s4", "b12-s10"], // Blanc
-            "b12-groupe4": ["b12-s14"],
+            "b12-group4": ["b12-s14"],
         };
 
         function findGroup(sectionId) {
@@ -167,6 +223,42 @@
                 .catch(error => alert("Erreur de chargement du modèle SVG"));
         } else {
             alert("Modèle non spécifié !");
+        }
+
+        function addToCart() {
+            const model = new URLSearchParams(window.location.search).get("model");
+            const quantity = parseInt(document.getElementById("quantity").value);
+
+            if (!model) {
+                alert("Aucun modèle sélectionné.");
+                return;
+            }
+
+            if (quantity <= 0) {
+                alert("Veuillez entrer une quantité valide.");
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            // Récupérer toutes les couleurs appliquées sur les éléments SVG
+            let selectedSections = document.querySelectorAll("[fill]");
+            let colors = [...new Set(Array.from(selectedSections).map(el => el.getAttribute("fill")).filter(c => c !== "none"))];
+
+            if (colors.length === 0) {
+                alert("Veuillez sélectionner au moins une couleur.");
+                return;
+            }
+
+            // Ajouter un nouvel élément au lieu de modifier un existant
+            cart.push({
+                model: model,
+                colors: colors, // Stocke les couleurs comme un tableau
+                quantity: quantity
+            });
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Modèle ajouté au panier !");
         }
     </script>
 </body>

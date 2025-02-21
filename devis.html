@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demande de Devis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+            text-align: left;
+        }
+        
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #218838;
+        }
+        
+        .order-summary {
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Demande de Devis</h1>
+    <form id="devisForm">
+        <label for="name">Nom et Prénom :</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Téléphone :</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="message">Message :</label>
+        <textarea id="message" name="message" rows="4"></textarea>
+
+        <div class="order-summary">
+            <h2>Résumé de la commande :</h2>
+            <ul id="orderDetails"></ul>
+        </div>
+
+        <button type="button" class="btn" onclick="sendRequest()">Envoyer la Demande</button>
+    </form>
+
+    <script>
+        function loadOrderSummary() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const orderDetails = document.getElementById("orderDetails");
+            orderDetails.innerHTML = "";
+
+            cart.forEach(item => {
+                let colors = item.colors.join(", ");
+                let li = document.createElement("li");
+                li.textContent = `Modèle: ${item.model}, Couleurs: ${colors}, Quantité: ${item.quantity}`;
+                orderDetails.appendChild(li);
+            });
+        }
+
+        function sendRequest() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const message = document.getElementById("message").value;
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            if (!name || !email || !phone) {
+                alert("Veuillez remplir tous les champs obligatoires.");
+                return;
+            }
+
+            const orderData = {
+                name,
+                email,
+                phone,
+                message,
+                cart
+            };
+
+            fetch("send_email.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(orderData)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert("Votre demande de devis a été envoyée !");
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de l'envoi :", error);
+                    alert("Une erreur est survenue lors de l'envoi.");
+                });
+        }
+    </script>
+</body>
+
+</html>
