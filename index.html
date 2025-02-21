@@ -121,21 +121,19 @@
         }
         
         .catalog-item {
-            width: 500px;
-            /* Taille plus appropriée pour les cartes */
-            height: 400px;
-            /* Ajustement de la hauteur */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            /* Meilleure répartition de l'espace */
+            /* Centre horizontalement */
+            justify-content: center;
+            /* Répartit l'espace entre l'image et le texte */
             text-align: center;
-            padding: 10px;
+            padding: 5px;
+            width: 500px;
+            height: 400px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease-in-out;
         }
         
         .catalog-item:hover {
@@ -143,12 +141,12 @@
         }
         
         .catalog-item img {
-            width: 100%;
+            width: 400px;
+            /* Empêche l’image de dépasser la largeur */
             height: auto;
+            /* S’assure qu’elle ne déborde pas en hauteur */
             object-fit: contain;
-            /* Évite la déformation */
-            display: block;
-            margin-bottom: 10px;
+            /* Évite toute déformation */
         }
         
         .catalog-item p {
@@ -157,7 +155,7 @@
             color: #333;
             margin-top: auto;
             /* Assure que le texte est bien en bas */
-            padding: 10px 0;
+            padding: 0px 0;
         }
         /* Pied de page */
         
