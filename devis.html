@@ -122,6 +122,27 @@
             display: block;
             /* Empêche les espaces vides */
         }
+        
+        .color-box {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .color-sample {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            display: inline-block;
+        }
+        
+        .color-ref {
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+            margin-left: 5px;
+        }
     </style>
 </head>
 
@@ -174,27 +195,25 @@
             }
 
             cart.forEach(item => {
-                        console.log(`🔹 Chargement de l'élément ${item.model}:`, item);
+                console.log(`🔹 Chargement de l'élément ${item.model}:`, item);
 
-                        // Vérifier si le SVG est bien défini
-                        let svgContent = item.svg && item.svg.trim() !== "" ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>";
+                let colorsHtml = item.colors.map(color => `
+                <div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>
+                <span class="color-ref">${color}</span>
+            `).join(" ");
 
-                        // Création d'une ligne avec exactement 4 colonnes
-                        let row = document.createElement("tr");
-
-                        row.innerHTML = `
-                <td class="svg-container-td">${svgContent}</td> <!-- Suppression des div inutiles -->
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                <td class="svg-container-td">${item.svg ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>"}</td>
                 <td>${item.model}</td>
                 <td>
-                    <div class="color-box">
-                        ${item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("")}
-                    </div>
+                    <div class="color-box">${colorsHtml}</div>
                 </td>
                 <td>${item.quantity}</td>
             `;
 
-            orderDetails.appendChild(row);
-        });
+                orderDetails.appendChild(row);
+            });
 
 
             console.log("✅ Résumé du devis chargé avec succès !");
