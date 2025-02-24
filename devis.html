@@ -102,6 +102,26 @@
             font-size: 14px;
             color: #666;
         }
+        
+        .svg-container-td {
+            width: 100px;
+            /* Taille du SVG ajustée */
+            min-width: 100px;
+            max-width: 100px;
+            text-align: center;
+            /* Centre horizontalement */
+            vertical-align: middle;
+            /* Centre verticalement */
+            padding: 0;
+            /* Évite tout espace interne */
+        }
+        
+        .svg-container-td svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Empêche les espaces vides */
+        }
     </style>
 </head>
 
@@ -143,7 +163,7 @@
 
     <script>
         function loadOrderSummary() {
-            console.log("Chargement du résumé de commande...");
+            console.log("📦 Chargement du résumé de commande...");
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             const orderDetails = document.getElementById("orderDetails");
             orderDetails.innerHTML = "";
@@ -154,18 +174,32 @@
             }
 
             cart.forEach(item => {
-                let colorsHtml = item.colors.map(color => `<div class='color-sample' style='background-color:${color}'></div>`).join(" ");
+                        console.log(`🔹 Chargement de l'élément ${item.model}:`, item);
 
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td><img src="svgs/Bar_V${item.model}.svg" alt="Barre ${item.model}" width="50"></td>
-                    <td>${item.model}</td>
-                    <td><div class="color-box">${colorsHtml}</div></td>
-                    <td>${item.quantity}</td>
-                `;
-                orderDetails.appendChild(row);
-            });
+                        // Vérifier si le SVG est bien défini
+                        let svgContent = item.svg && item.svg.trim() !== "" ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>";
+
+                        // Création d'une ligne avec exactement 4 colonnes
+                        let row = document.createElement("tr");
+
+                        row.innerHTML = `
+                <td class="svg-container-td">${svgContent}</td> <!-- Suppression des div inutiles -->
+                <td>${item.model}</td>
+                <td>
+                    <div class="color-box">
+                        ${item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("")}
+                    </div>
+                </td>
+                <td>${item.quantity}</td>
+            `;
+
+            orderDetails.appendChild(row);
+        });
+
+
+            console.log("✅ Résumé du devis chargé avec succès !");
         }
+
 
         function sendRequest() {
             const name = document.getElementById("name").value.trim();

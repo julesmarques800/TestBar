@@ -149,6 +149,20 @@
     <a href="devis.html" class="btn-devis">Envoyer le devis</a>
 
     <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("📢 Vérification de la session...");
+
+            // Vérifie si c'est la première visite de la session
+            if (!sessionStorage.getItem("sessionActive")) {
+                console.log("🗑️ Nouvelle session détectée : Suppression du panier...");
+                localStorage.removeItem("cart"); // Supprime le panier
+                sessionStorage.setItem("sessionActive", "true"); // Marque la session comme active
+            }
+
+            console.log("📦 Chargement du panier...");
+            loadCart();
+        });
+
         function loadCart() {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             console.log("📦 Chargement du panier...");
