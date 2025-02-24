@@ -225,42 +225,66 @@
             alert("Modèle non spécifié !");
         }
 
+
         function addToCart() {
             const model = new URLSearchParams(window.location.search).get("model");
             const quantity = parseInt(document.getElementById("quantity").value);
 
+            console.log("🛒 Tentative d'ajout au panier...");
+            console.log("Modèle sélectionné:", model);
+            console.log("Quantité:", quantity);
+
             if (!model) {
                 alert("Aucun modèle sélectionné.");
+                console.error("❌ Erreur : Aucun modèle détecté.");
                 return;
             }
 
             if (quantity <= 0) {
                 alert("Veuillez entrer une quantité valide.");
+                console.error("❌ Erreur : Quantité invalide.");
                 return;
             }
 
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
             // Récupérer toutes les couleurs appliquées sur les éléments SVG
-            let selectedSections = document.querySelectorAll("[fill]");
+            let selectedSections = document.querySelectorAll("#svgContainer svg [fill]");
             let colors = [...new Set(Array.from(selectedSections).map(el => el.getAttribute("fill")).filter(c => c !== "none"))];
+
+            console.log("Couleurs sélectionnées:", colors);
 
             if (colors.length === 0) {
                 alert("Veuillez sélectionner au moins une couleur.");
+                console.error("❌ Erreur : Aucune couleur sélectionnée.");
                 return;
             }
 
-            // Ajouter un nouvel élément au lieu de modifier un existant
+            // Capturer l'état actuel du SVG sous forme de chaîne HTML
+            const svgElement = document.getElementById("svgContainer").innerHTML;
+
+            console.log("🔄 SVG sauvegardé:", svgElement);
+
+            if (!svgElement || svgElement.trim() === "") {
+                alert("Erreur : Impossible de récupérer l'image du modèle.");
+                console.error("❌ Erreur : SVG non récupéré.");
+                return;
+            }
+
+            // Ajouter un nouvel élément avec SVG enregistré
             cart.push({
                 model: model,
-                colors: colors, // Stocke les couleurs comme un tableau
-                quantity: quantity
+                colors: colors,
+                quantity: quantity,
+                svg: svgElement
             });
 
             localStorage.setItem("cart", JSON.stringify(cart));
+            console.log("✅ Modèle ajouté au panier avec succès !");
             alert("Modèle ajouté au panier !");
         }
     </script>
+
 </body>
 
 </html>

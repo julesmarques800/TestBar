@@ -96,6 +96,34 @@
             margin: 5px 0;
             text-decoration: none;
         }
+        
+        .svg-container-td {
+            width: 130px;
+            /* Taille contrôlée */
+            min-width: 130px;
+            max-width: 130px;
+            overflow: hidden;
+            padding: 0;
+            /* Évite les marges internes */
+            text-align: center;
+        }
+        
+        .svg-container {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* Évite toute extension */
+        }
+        
+        .svg-container svg {
+            width: 150%;
+            height: auto;
+            display: block;
+            /* Empêche tout espace blanc résiduel */
+        }
     </style>
 </head>
 
@@ -123,60 +151,82 @@
     <script>
         function loadCart() {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            console.log("📦 Chargement du panier...");
+            console.log("Contenu du panier:", cart);
+
             const tableBody = document.getElementById("cartTableBody");
             tableBody.innerHTML = "";
 
             cart.forEach((item, index) => {
-                let colorsHtml = item.colors.map(color => `<div class='color-sample' style='background-color:${color}'></div>`).join(" ");
+                        console.log(`🔹 Chargement de l'élément ${index}:`, item);
 
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td><img src="svgs/Bar_V${item.model}.svg" alt="Barre ${item.model}" width="100"></td>
-                    <td>${item.model}</td>
-                    <td>
-                        <div class="color-box">
-                            ${colorsHtml}
-                        </div>
-                    </td>
-                    <td>
-                        <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;">
-                    </td>
-                    <td>
-                        <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
-                        <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
+                        // Vérifier si le SVG est bien défini
+                        let svgContent = item.svg && item.svg.trim() !== "" ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>";
+
+                        // Création de la ligne du tableau avec exactement 5 colonnes (td)
+                        let row = document.createElement("tr");
+
+                        row.innerHTML = `
+                <td class="svg-container-td">
+                    <div class="svg-container">${svgContent}</div>
+                </td>
+                <td>${item.model}</td>
+                <td>
+                    <div class="color-box">
+                        ${item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("")}
+                    </div>
+                </td>
+                <td>
+                    <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;" 
+                    onchange="updateQuantity(${index})">
+                </td>
+                <td>
+                    <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
+                    <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+    
+            console.log("✅ Chargement du panier terminé.");
         }
-
-        function redirectToConfig(index) {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let model = cart[index].model;
-            window.location.href = `config.html?model=${model}`;
-        }
-
+    
         function updateQuantity(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let newQty = parseInt(document.getElementById(`qty-${index}`).value);
+    
+            console.log(`📝 Mise à jour de la quantité de l'élément ${index}:`, newQty);
+    
             if (newQty > 0) {
                 cart[index].quantity = newQty;
                 localStorage.setItem("cart", JSON.stringify(cart));
-                loadCart();
+                console.log("✅ Quantité mise à jour !");
             } else {
                 alert("La quantité doit être au moins 1");
+                console.error("❌ Erreur : Quantité invalide.");
             }
         }
-
+    
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            console.log(`🗑️ Suppression de l'élément ${index}:`, cart[index]);
+    
             cart.splice(index, 1);
             localStorage.setItem("cart", JSON.stringify(cart));
             loadCart();
+    
+            console.log("✅ Élément supprimé du panier.");
         }
-
-        document.addEventListener("DOMContentLoaded", loadCart);
+    
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("📢 DOM chargé, lancement du chargement du panier...");
+            loadCart();
+        });
     </script>
+
+
 </body>
 
 </html>
