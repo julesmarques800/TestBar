@@ -99,6 +99,11 @@
         <button class="btn" onclick="addToCart()">Ajouter au Panier</button>
         <a href="panier.html" class="btn">Voir le Panier</a>
         <button class="btn btn-clear" onclick="clearCart()">Vider le Panier</button>
+        <select id="length" style="padding: 5px; font-size: 16px;">
+            <option value="3m">3m</option>
+            <option value="3.5m">3,50m</option>
+        </select>
+
     </div>
 
     <a href="index.html" class="btn-retour">Retour à l'accueil</a>
@@ -257,6 +262,7 @@
         function addToCart() {
             const model = new URLSearchParams(window.location.search).get("model");
             const quantity = parseInt(document.getElementById("quantity").value);
+            const length = document.getElementById("length").value;
 
             console.log("🛒 Tentative d'ajout au panier...");
             console.log("Modèle sélectionné:", model);
@@ -304,7 +310,8 @@
                 model: model,
                 colors: colors,
                 quantity: quantity,
-                svg: svgElement
+                svg: svgElement,
+                length: length
             });
 
             localStorage.setItem("cart", JSON.stringify(cart));

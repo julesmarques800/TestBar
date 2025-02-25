@@ -210,6 +210,8 @@
                         <th>Modèle</th>
                         <th>Couleurs</th>
                         <th>Quantité</th>
+                        <th>Longueur</th>
+
                     </tr>
                 </thead>
                 <tbody id="orderDetails">
@@ -289,6 +291,7 @@
                         <div class="color-box">${colorsHtml}</div>
                     </td>
                     <td>${item.quantity}</td>
+                    <td>${item.length}</td> <!-- Ajout de la longueur ici -->
                 `;
 
                 orderDetails.appendChild(row);

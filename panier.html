@@ -135,8 +135,11 @@
                 <th>Image</th>
                 <th>Modèle</th>
                 <th>Couleurs</th>
+                <th>Longueur</th>
                 <th>Quantité</th>
                 <th>Actions</th>
+
+
             </tr>
         </thead>
         <tbody id="cartTableBody">
@@ -181,29 +184,31 @@
                         let row = document.createElement("tr");
 
                         row.innerHTML = `
-                <td class="svg-container-td">
-                    <div class="svg-container">${svgContent}</div>
-                </td>
-                <td>${item.model}</td>
-                <td>
-                    <div class="color-box">
-                        ${item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("")}
-                    </div>
-                </td>
-                <td>
-                    <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;" 
-                    onchange="updateQuantity(${index})">
-                </td>
-                <td>
-                    <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
-                    <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
-                </td>
-            `;
+                    <td class="svg-container-td">
+                        <div class="svg-container">${svgContent}</div>
+                    </td>
+                    <td>${item.model}</td>
+                    <td>
+                        <div class="color-box">
+                            ${item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("")}
+                        </div>
+                    </td>
+                    <td>${item.length || "Non spécifié"}</td> <!-- Correction de l'affichage de la longueur -->
+                    <td>
+                        <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;" 
+                        onchange="updateQuantity(${index})">
+                    </td>
+                    <td>
+                        <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
+                        <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
+                    </td>
+                `;
 
-            tableBody.appendChild(row);
-        });
+                tableBody.appendChild(row);
 
-    
+            });
+
+
             console.log("✅ Chargement du panier terminé.");
         }
     
