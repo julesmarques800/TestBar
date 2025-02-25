@@ -18,9 +18,24 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 50%;
+            width: 80%;
             margin: auto;
             text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+            margin-right: 10px;
+        }
+        
+        .full-width {
+            width: 100%;
         }
         
         label {
@@ -48,7 +63,8 @@
             border-radius: 5px;
             margin-top: 20px;
             display: block;
-            width: 100%;
+            width: 10%;
+            margin: auto;
         }
         
         .btn:hover {
@@ -56,6 +72,7 @@
         }
         
         .order-summary {
+            width: 100%;
             margin-top: 20px;
             padding: 10px;
             background: #fff;
@@ -149,17 +166,40 @@
 <body>
     <h1>Demande de Devis</h1>
     <form id="devisForm">
-        <label for="name">Nom et Prénom :</label>
-        <input type="text" id="name" name="name" required>
+        <div class="form-group">
+            <label for="name">Nom *</label>
+            <input type="text" id="name" name="name" required>
+        </div>
 
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Veuillez entrer un email valide">
+        <div class="form-group">
+            <label for="phone">Numéro de téléphone *</label>
+            <input type="tel" id="phone" name="phone" required pattern="^\+?[0-9\s\-]{7,15}$" title="Entrez un numéro de téléphone valide">
+        </div>
 
-        <label for="phone">Téléphone :</label>
-        <input type="tel" id="phone" name="phone" required pattern="^\+?[0-9\s\-]{7,15}$" title="Entrez un numéro de téléphone valide">
+        <div class="form-group full-width">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Veuillez entrer un email valide">
+        </div>
 
-        <label for="message">Message :</label>
-        <textarea id="message" name="message" rows="4"></textarea>
+        <div class="form-group full-width">
+            <label for="adresse">Adresse *</label>
+            <input type="text" id="adresse" name="adresse" required>
+        </div>
+
+        <div class="form-group full-width">
+            <label for="societe">Société</label>
+            <input type="text" id="societe" name="societe">
+        </div>
+
+        <div class="form-group full-width">
+            <label for="sujet">Sujet</label>
+            <input type="text" id="sujet" name="sujet">
+        </div>
+
+        <div class="form-group full-width">
+            <label for="message">Question *</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+        </div>
 
         <div class="order-summary">
             <h2>Résumé de la commande :</h2>
@@ -178,11 +218,47 @@
             </table>
         </div>
 
-        <button type="button" class="btn" id="sendBtn" onclick="sendRequest()">Envoyer la Demande</button>
+        <button type="button" class="btn" id="sendBtn" onclick="sendRequest()">Soumettre</button>
         <p id="loading">Envoi en cours...</p>
     </form>
 
     <script>
+        const hexToRal = {
+            "#d0b084": "RAL 1001",
+            "#ddc49a": "RAL 1014",
+            "#e6d2b5": "RAL 1015",
+            "#f1dd38": "RAL 1016",
+            "#da6e00": "RAL 2000",
+            "#c73f4a": "RAL 3018",
+            "#bb1e10": "RAL 3020",
+            "#8d3c4b": "RAL 4002",
+            "#193153": "RAL 5013",
+            "#637d96": "RAL 5014",
+            "#222d5a": "RAL 5022",
+            "#114232": "RAL 6005",
+            "#61993b": "RAL 6018",
+            "#b9ceac": "RAL 6019",
+            "#8a9977": "RAL 6021",
+            "#575d5e": "RAL 7012",
+            "#4f5358": "RAL 7015",
+            "#383e42": "RAL 7016",
+            "#2f3234": "RAL 7021",
+            "#4c4a44": "RAL 7022",
+            "#c5c7c4": "RAL 7035",
+            "#7a7b7a": "RAL 7037",
+            "#8e9291": "RAL 7042",
+            "#8d9295": "RAL 7045",
+            "#66332b": "RAL 8012",
+            "#4a3526": "RAL 8014",
+            "#e9e0d2": "RAL 9001",
+            "#2b2b2c": "RAL 9004",
+            "#0e0e10": "RAL 9005",
+            "#f1ece1": "RAL 9010",
+            "#f1f0ea": "RAL 9016"
+
+        };
+
+
         function loadOrderSummary() {
             console.log("📦 Chargement du résumé de commande...");
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -197,20 +273,23 @@
             cart.forEach(item => {
                 console.log(`🔹 Chargement de l'élément ${item.model}:`, item);
 
-                let colorsHtml = item.colors.map(color => `
-                <div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>
-                <span class="color-ref">${color}</span>
-            `).join(" ");
+                let colorsHtml = item.colors.map(color => {
+                    let ralCode = hexToRal[color] || "RAL inconnu";
+                    return `
+                        <div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>
+                        <span class="color-ref">${ralCode}</span>
+                    `;
+                }).join(" ");
 
                 let row = document.createElement("tr");
                 row.innerHTML = `
-                <td class="svg-container-td">${item.svg ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>"}</td>
-                <td>${item.model}</td>
-                <td>
-                    <div class="color-box">${colorsHtml}</div>
-                </td>
-                <td>${item.quantity}</td>
-            `;
+                    <td class="svg-container-td">${item.svg ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>"}</td>
+                    <td>${item.model}</td>
+                    <td>
+                        <div class="color-box">${colorsHtml}</div>
+                    </td>
+                    <td>${item.quantity}</td>
+                `;
 
                 orderDetails.appendChild(row);
             });
