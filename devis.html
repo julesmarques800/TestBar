@@ -202,23 +202,40 @@
         </div>
 
         <div class="order-summary">
-            <h2>Résumé de la commande :</h2>
+            <h2>🔹 Barres Individuelles</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Image</th>
                         <th>Modèle</th>
                         <th>Couleurs</th>
-                        <th>Quantité</th>
                         <th>Longueur</th>
-
+                        <th>Quantité</th>
                     </tr>
                 </thead>
-                <tbody id="orderDetails">
-                    <!-- Résumé du panier généré dynamiquement -->
+                <tbody id="individualOrderTable">
+                    <!-- Barres individuelles ajoutées dynamiquement -->
+                </tbody>
+            </table>
+
+            <h2>📦 Packs de Barres</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pack</th>
+                        <th>Image</th>
+                        <th>Modèle</th>
+                        <th>Couleurs</th>
+                        <th>Longueur</th>
+                        <th>Quantité</th>
+                    </tr>
+                </thead>
+                <tbody id="packsOrderTable">
+                    <!-- Packs de barres ajoutés dynamiquement -->
                 </tbody>
             </table>
         </div>
+
 
         <button type="button" class="btn" id="sendBtn" onclick="sendRequest()">Soumettre</button>
         <p id="loading">Envoi en cours...</p>
@@ -264,8 +281,11 @@
         function loadOrderSummary() {
             console.log("📦 Chargement du résumé de commande...");
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const orderDetails = document.getElementById("orderDetails");
-            orderDetails.innerHTML = "";
+            const individualOrderTable = document.getElementById("individualOrderTable");
+            const packsOrderTable = document.getElementById("packsOrderTable");
+
+            individualOrderTable.innerHTML = "";
+            packsOrderTable.innerHTML = "";
 
             if (cart.length === 0) {
                 orderDetails.innerHTML = "<tr><td colspan='4'>Aucun article dans le panier.</td></tr>";
@@ -273,29 +293,49 @@
             }
 
             cart.forEach(item => {
-                console.log(`🔹 Chargement de l'élément ${item.model}:`, item);
+                if (!item.items) { // Si ce n'est PAS un pack
+                    let colorsHtml = item.colors.map(color => {
+                        let ralCode = hexToRal[color] || "RAL inconnu";
+                        return `<div class='color-sample' style='background-color:${color};'></div> <span class="color-ref">${ralCode}</span>`;
+                    }).join(" ");
 
-                let colorsHtml = item.colors.map(color => {
-                    let ralCode = hexToRal[color] || "RAL inconnu";
-                    return `
-                        <div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>
-                        <span class="color-ref">${ralCode}</span>
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><img src="data:image/svg+xml;base64,${btoa(item.svg)}" style="width: 100px; height: auto;"></td>
+                        <td>Modèle ${item.model}</td>
+                        <td><div class="color-box">${colorsHtml}</div></td>
+                        <td>${item.length || "Non spécifié"}</td>
+                        <td>${item.quantity}</td>
                     `;
-                }).join(" ");
 
-                let row = document.createElement("tr");
-                row.innerHTML = `
-                    <td class="svg-container-td">${item.svg ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>"}</td>
-                    <td>${item.model}</td>
-                    <td>
-                        <div class="color-box">${colorsHtml}</div>
-                    </td>
-                    <td>${item.quantity}</td>
-                    <td>${item.length}</td> <!-- Ajout de la longueur ici -->
-                `;
-
-                orderDetails.appendChild(row);
+                    individualOrderTable.appendChild(row);
+                }
             });
+
+            cart.forEach((item, index) => {
+                        if (item.items) { // Si c'est un pack
+                            item.items.forEach((bar, subIndex) => {
+                                        let svgImage = bar.svg ? `<img src="data:image/svg+xml;base64,${btoa(bar.svg)}" style="width: 100px; height: auto;">` : "❌ Erreur";
+                                        let colorBoxes = bar.colors.map(color => {
+                                            let ralCode = hexToRal[color] || "RAL inconnu";
+                                            return `<div class='color-sample' style='background-color:${color};'></div> <span class="color-ref">${ralCode}</span>`;
+                                        }).join(" ");
+
+                                        let packRow = document.createElement("tr");
+                                        packRow.innerHTML = `
+                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">Pack de ${item.packSize} Barres</td>` : ""}
+                            <td>${svgImage}</td>
+                            <td>Modèle ${bar.model}</td>
+                            <td><div class="color-box">${colorBoxes}</div></td>
+                            <td>${bar.length || "Non spécifié"}</td>
+                            <td>${bar.quantity}</td>
+                        `;
+
+                        packsOrderTable.appendChild(packRow);
+                    });
+                }
+            });
+
 
 
             console.log("✅ Résumé du devis chargé avec succès !");

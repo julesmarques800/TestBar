@@ -129,6 +129,7 @@
 
 <body>
     <h1>Votre Panier</h1>
+    <h2>🔹 Barres Individuelles</h2>
     <table>
         <thead>
             <tr>
@@ -138,112 +139,148 @@
                 <th>Longueur</th>
                 <th>Quantité</th>
                 <th>Actions</th>
-
-
             </tr>
         </thead>
-        <tbody id="cartTableBody">
-            <!-- Contenu du panier généré dynamiquement -->
+        <tbody id="individualBarsTable">
+            <!-- Barres individuelles s'affichent ici -->
         </tbody>
     </table>
 
-    <br>
-    <a href="index.html" class="btn">Retour à l'accueil</a>
-    <a href="devis.html" class="btn-devis">Envoyer le devis</a>
+    <h2>📦 Packs de Barres</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Pack</th>
+                <th>Image</th>
+                <th>Modèle</th>
+                <th>Couleurs</th>
+                <th>Longueur</th>
+                <th>Quantité</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="packsTable">
+            <!-- Packs de barres s'affichent ici -->
+        </tbody>
+        <table>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("📢 Vérification de la session...");
+            <br>
+            <a href="index.html" class="btn">Retour à l'accueil</a>
+            <a href="devis.html" class="btn-devis">Envoyer le devis</a>
 
-            // Vérifie si c'est la première visite de la session
-            if (!sessionStorage.getItem("sessionActive")) {
-                console.log("🗑️ Nouvelle session détectée : Suppression du panier...");
-                localStorage.removeItem("cart"); // Supprime le panier
-                sessionStorage.setItem("sessionActive", "true"); // Marque la session comme active
-            }
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    console.log("📢 Vérification de la session...");
 
-            console.log("📦 Chargement du panier...");
-            loadCart();
-        });
+                    // Vérifie si c'est la première visite de la session
+                    if (!sessionStorage.getItem("sessionActive")) {
+                        console.log("🗑️ Nouvelle session détectée : Suppression du panier...");
+                        localStorage.removeItem("cart"); // Supprime le panier
+                        sessionStorage.setItem("sessionActive", "true"); // Marque la session comme active
+                    }
 
-        function loadCart() {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            console.log("📦 Chargement du panier...");
-            console.log("Contenu du panier:", cart);
+                    console.log("📦 Chargement du panier...");
+                    loadCart();
+                });
 
-            const tableBody = document.getElementById("cartTableBody");
-            tableBody.innerHTML = "";
+                function loadCart() {
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    console.log("📦 Chargement du panier...", cart);
 
-            cart.forEach((item, index) => {
-                        console.log(`🔹 Chargement de l'élément ${index}:`, item);
+                    const individualBarsTable = document.getElementById("individualBarsTable");
+                    const packsTable = document.getElementById("packsTable");
 
-                        // Vérifier si le SVG est bien défini
-                        let svgContent = item.svg && item.svg.trim() !== "" ? item.svg : "<span style='color:red;'>❌ Erreur d'affichage</span>";
+                    individualBarsTable.innerHTML = "";
+                    packsTable.innerHTML = "";
 
-                        // Création de la ligne du tableau avec exactement 5 colonnes (td)
-                        let row = document.createElement("tr");
+                    cart.forEach((item, index) => {
+                                if (item.items) {
+                                    // 📦 C'est un PACK (aucun changement ici)
+                                    item.items.forEach((bar, subIndex) => {
+                                                let svgImage = bar.svg ? `<img src="data:image/svg+xml;base64,${btoa(bar.svg)}" alt="Modèle ${bar.model}" style="width: 100px; height: auto;">` : "❌ Erreur";
+                                                let colorBoxes = bar.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("");
 
-                        row.innerHTML = `
-                    <td class="svg-container-td">
-                        <div class="svg-container">${svgContent}</div>
-                    </td>
-                    <td>${item.model}</td>
-                    <td>
-                        <div class="color-box">
-                            ${item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("")}
-                        </div>
-                    </td>
-                    <td>${item.length || "Non spécifié"}</td> <!-- Correction de l'affichage de la longueur -->
-                    <td>
-                        <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;" 
-                        onchange="updateQuantity(${index})">
-                    </td>
-                    <td>
-                        <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
-                        <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
-                    </td>
-                `;
+                                                let packRow = document.createElement("tr");
+                                                packRow.innerHTML = `
+                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">Pack de ${item.packSize} Barres</td>` : ""}
+                            <td>${svgImage}</td>
+                            <td>Modèle ${bar.model}</td>
+                            <td>
+                                <div class="color-box">${colorBoxes}</div>
+                            </td>
+                            <td>${bar.length || "Non spécifié"}</td>
+                            <td>${bar.quantity}</td>
+                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">
+                                <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
+                            </td>` : ""}
+                        `;
 
-                tableBody.appendChild(row);
+                        packsTable.appendChild(packRow);
+                    });
+                } else {
+                    // 🟢 C'est une BARRE INDIVIDUELLE PERSONNALISÉE (Correction ici)
+                    let svgData = item.svg ? `data:image/svg+xml;base64,${btoa(item.svg)}` : "<span style='color:red;'>❌ Erreur</span>";
+                    let colorBoxes = item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("");
 
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <img src="${svgData}" alt="Modèle ${item.model}" style="width: 100px; height: auto;">
+                        </td>
+                        <td>${item.model}</td>
+                        <td>
+                            <div class="color-box">${colorBoxes}</div>
+                        </td>
+                        <td>${item.length || "Non spécifié"}</td>
+                        <td>
+                            <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;" onchange="updateQuantity(${index})">
+                        </td>
+                        <td>
+                            <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
+                            <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
+                        </td>
+                    `;
+
+                    individualBarsTable.appendChild(row);
+                }
             });
 
-
-            console.log("✅ Chargement du panier terminé.");
+            console.log("✅ Panier mis à jour.");
         }
-    
+
+
+
         function updateQuantity(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let newQty = parseInt(document.getElementById(`qty-${index}`).value);
-    
-            console.log(`📝 Mise à jour de la quantité de l'élément ${index}:`, newQty);
-    
+
             if (newQty > 0) {
                 cart[index].quantity = newQty;
                 localStorage.setItem("cart", JSON.stringify(cart));
                 console.log("✅ Quantité mise à jour !");
             } else {
                 alert("La quantité doit être au moins 1");
-                console.error("❌ Erreur : Quantité invalide.");
             }
         }
+
     
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
             console.log(`🗑️ Suppression de l'élément ${index}:`, cart[index]);
-    
+
             cart.splice(index, 1);
             localStorage.setItem("cart", JSON.stringify(cart));
+
             loadCart();
-    
-            console.log("✅ Élément supprimé du panier.");
         }
+
     
         document.addEventListener("DOMContentLoaded", () => {
             console.log("📢 DOM chargé, lancement du chargement du panier...");
             loadCart();
         });
-    </script>
+            </script>
 
 
 </body>
