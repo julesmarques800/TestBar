@@ -357,12 +357,6 @@
             let selectedPackSize = localStorage.getItem("selectedPackSize");
             let tempPack = JSON.parse(localStorage.getItem("tempPack")) || [];
 
-            if (!selectedPackSize) {
-                alert("Veuillez d'abord choisir un pack.");
-                window.location.href = "choix_pack.html";
-                return;
-            }
-
             if (tempPack.length === 0) {
                 localStorage.setItem("tempPack", JSON.stringify([]));
             }
