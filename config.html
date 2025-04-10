@@ -111,6 +111,40 @@
 
 
     <script>
+        const hexToRal = {
+            "#d0b084": "RAL 1001",
+            "#ddc49a": "RAL 1014",
+            "#e6d2b5": "RAL 1015",
+            "#f1dd38": "RAL 1016",
+            "#da6e00": "RAL 2000",
+            "#c73f4a": "RAL 3018",
+            "#bb1e10": "RAL 3020",
+            "#8d3c4b": "RAL 4002",
+            "#193153": "RAL 5013",
+            "#637d96": "RAL 5014",
+            "#222d5a": "RAL 5022",
+            "#114232": "RAL 6005",
+            "#61993b": "RAL 6018",
+            "#b9ceac": "RAL 6019",
+            "#8a9977": "RAL 6021",
+            "#575d5e": "RAL 7012",
+            "#4f5358": "RAL 7015",
+            "#383e42": "RAL 7016",
+            "#2f3234": "RAL 7021",
+            "#4c4a44": "RAL 7022",
+            "#c5c7c4": "RAL 7035",
+            "#7a7b7a": "RAL 7037",
+            "#8e9291": "RAL 7042",
+            "#8d9295": "RAL 7045",
+            "#66332b": "RAL 8012",
+            "#4a3526": "RAL 8014",
+            "#e9e0d2": "RAL 9001",
+            "#2b2b2c": "RAL 9004",
+            "#0e0e10": "RAL 9005",
+            "#f1ece1": "RAL 9010",
+            "#f1f0ea": "RAL 9016"
+        };
+
         const colors = [
             "#d0b084",
             "#ddc49a",
@@ -148,16 +182,33 @@
         let selectedColor = colors[0];
         const colorPalette = document.getElementById("colorPalette");
 
+        // Pour chaque couleur, on crée un conteneur qui regroupe la pastille et le nom RAL
         colors.forEach(color => {
+            const swatchContainer = document.createElement("div");
+            swatchContainer.style.display = "inline-block";
+            swatchContainer.style.textAlign = "center";
+            swatchContainer.style.margin = "5px";
+
+            // Création de la pastille de couleur
             const swatch = document.createElement("div");
             swatch.classList.add("color-swatch");
             swatch.style.backgroundColor = color;
             swatch.addEventListener("click", () => {
+                // Retirer la classe "selected" à toutes les pastilles
                 document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
                 swatch.classList.add("selected");
                 selectedColor = color;
             });
-            colorPalette.appendChild(swatch);
+            swatchContainer.appendChild(swatch);
+
+            // Création du label pour afficher le code RAL correspondant
+            const label = document.createElement("div");
+            label.innerText = hexToRal[color] || "RAL inconnu";
+            label.style.fontSize = "10px";
+            label.style.marginTop = "2px";
+            swatchContainer.appendChild(label);
+
+            colorPalette.appendChild(swatchContainer);
         });
 
         const groups = {
@@ -201,6 +252,8 @@
             "b12-group2": ["b12-s2", "b12-s6", "b12-s8", "b12-s12"], // Orange
             "b12-group3": ["b12-s4", "b12-s10"], // Blanc
             "b12-group4": ["b12-s14"],
+
+            "b13-group1": ["b13-s1"],
         };
 
         function findGroup(sectionId) {
