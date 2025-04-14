@@ -172,14 +172,13 @@
             <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     console.log("📢 Vérification de la session...");
-
-                    // Vérifie si c'est la première visite de la session
+                    // Si la session a déjà été initialisée dans index.html,
+                    // on ne vide pas le panier ici.
                     if (!sessionStorage.getItem("sessionActive")) {
-                        console.log("🗑️ Nouvelle session détectée : Suppression du panier...");
-                        localStorage.removeItem("cart"); // Supprime le panier
-                        sessionStorage.setItem("sessionActive", "true"); // Marque la session comme active
+                        console.log("Nouvelle session détectée, initialisation.");
+                        // localStorage.removeItem("cart"); // Cette ligne est commentée pour ne pas vider le panier
+                        sessionStorage.setItem("sessionActive", "true");
                     }
-
                     console.log("📦 Chargement du panier...");
                     loadCart();
                 });
