@@ -33,25 +33,19 @@
         }
         
         .btn {
-            padding: 5px 10px;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            border-radius: 3px;
             padding: 10px 20px;
             font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
             background-color: #28a745;
             color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
             margin: 5px 0;
             text-decoration: none;
         }
         
         .btn-remove {
             background-color: #dc3545;
-            color: white;
         }
         
         .btn-remove:hover {
@@ -60,11 +54,22 @@
         
         .btn-update {
             background-color: #007bff;
-            color: white;
         }
         
         .btn-update:hover {
             background-color: #0056b3;
+        }
+        
+        .btn-devis {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            margin: 5px 0;
+            text-decoration: none;
         }
         
         .color-box {
@@ -73,62 +78,26 @@
             justify-content: center;
         }
         
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2px 4px;
+            font-size: 11px;
+        }
+        
         .color-sample {
             width: 40px;
             height: 20px;
-            margin: 2px;
             border: 1px solid #000;
-        }
-        
-        .btn-devis {
-            padding: 5px 10px;
-            font-size: 14px;
-            cursor: pointer;
-            border: none;
-            border-radius: 3px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 5px 0;
-            text-decoration: none;
-        }
-        
-        .svg-container-td {
-            width: 130px;
-            /* Taille contrôlée */
-            min-width: 130px;
-            max-width: 130px;
-            overflow: hidden;
-            padding: 0;
-            /* Évite les marges internes */
-            text-align: center;
-        }
-        
-        .svg-container {
-            width: 100%;
-            height: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            /* Évite toute extension */
-        }
-        
-        .svg-container svg {
-            width: 150%;
-            height: auto;
-            display: block;
-            /* Empêche tout espace blanc résiduel */
+            margin-bottom: 2px;
         }
     </style>
 </head>
 
 <body>
     <h1>Votre Panier</h1>
+
     <h2>🔹 Barres Individuelles</h2>
     <table>
         <thead>
@@ -142,7 +111,7 @@
             </tr>
         </thead>
         <tbody id="individualBarsTable">
-            <!-- Barres individuelles s'affichent ici -->
+            <!-- Barres individuelles -->
         </tbody>
     </table>
 
@@ -160,129 +129,175 @@
             </tr>
         </thead>
         <tbody id="packsTable">
-            <!-- Packs de barres s'affichent ici -->
+            <!-- Packs -->
         </tbody>
-        <table>
+    </table>
 
-            <br>
-            <a href="index.html" class="btn">Retour à l'accueil</a>
-            <a href="choix_pack.html" class="btn">Retour Pack</a>
-            <a href="devis.html" class="btn-devis">Envoyer le devis</a>
+    <br>
+    <a href="index.html" class="btn">Retour à l'accueil</a>
+    <a href="choix_pack.html" class="btn">Retour Pack</a>
+    <a href="devis.html" class="btn-devis">Envoyer le devis</a>
 
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    console.log("📢 Vérification de la session...");
-                    // Si la session a déjà été initialisée dans index.html,
-                    // on ne vide pas le panier ici.
-                    if (!sessionStorage.getItem("sessionActive")) {
-                        console.log("Nouvelle session détectée, initialisation.");
-                        // localStorage.removeItem("cart"); // Cette ligne est commentée pour ne pas vider le panier
-                        sessionStorage.setItem("sessionActive", "true");
-                    }
-                    console.log("📦 Chargement du panier...");
-                    loadCart();
-                });
+    <script>
+        // même mapping que dans devis.html
+        const hexToRal = {
+            "#d0b084": "RAL 1001",
+            "#ddc49a": "RAL 1014",
+            "#e6d2b5": "RAL 1015",
+            "#f1dd38": "RAL 1016",
+            "#da6e00": "RAL 2000",
+            "#c73f4a": "RAL 3018",
+            "#bb1e10": "RAL 3020",
+            "#8d3c4b": "RAL 4002",
+            "#193153": "RAL 5013",
+            "#637d96": "RAL 5014",
+            "#222d5a": "RAL 5022",
+            "#114232": "RAL 6005",
+            "#61993b": "RAL 6018",
+            "#b9ceac": "RAL 6019",
+            "#8a9977": "RAL 6021",
+            "#575d5e": "RAL 7012",
+            "#4f5358": "RAL 7015",
+            "#383e42": "RAL 7016",
+            "#2f3234": "RAL 7021",
+            "#4c4a44": "RAL 7022",
+            "#c5c7c4": "RAL 7035",
+            "#7a7b7a": "RAL 7037",
+            "#8e9291": "RAL 7042",
+            "#8d9295": "RAL 7045",
+            "#66332b": "RAL 8012",
+            "#4a3526": "RAL 8014",
+            "#e9e0d2": "RAL 9001",
+            "#2b2b2c": "RAL 9004",
+            "#0e0e10": "RAL 9005",
+            "#f1ece1": "RAL 9010",
+            "#f1f0ea": "RAL 9016"
+        };
 
-                function loadCart() {
-                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                    console.log("📦 Chargement du panier...", cart);
+        document.addEventListener("DOMContentLoaded", () => {
+            if (!sessionStorage.getItem("sessionActive")) {
+                sessionStorage.setItem("sessionActive", "true");
+            }
+            loadCart();
+        });
 
-                    const individualBarsTable = document.getElementById("individualBarsTable");
-                    const packsTable = document.getElementById("packsTable");
+        function makeColorsHtml(colors) {
+            if (!colors) return "";
+            return colors.map(c => {
+                        const hex = c.toLowerCase();
+                        const ral = hexToRal[hex] || "";
+                        return `
+                    <div class="color-item">
+                        <div class="color-sample" style="background-color:${c};"></div>
+                        ${ral ? `<div>${ral}</div>` : ""}
+                    </div>
+                `;
+            }).join("");
+        }
 
-                    individualBarsTable.innerHTML = "";
-                    packsTable.innerHTML = "";
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            console.log("📦 Contenu du panier :", cart);
 
-                    cart.forEach((item, index) => {
-                                if (item.items) {
-                                    // 📦 C'est un PACK (aucun changement ici)
-                                    item.items.forEach((bar, subIndex) => {
-                                                let svgImage = bar.svg ? `<img src="data:image/svg+xml;base64,${btoa(bar.svg)}" alt="Modèle ${bar.model}" style="width: 100px; height: auto;">` : "❌ Erreur";
-                                                let colorBoxes = bar.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("");
+            const individualBarsTable = document.getElementById("individualBarsTable");
+            const packsTable = document.getElementById("packsTable");
 
-                                                let packRow = document.createElement("tr");
-                                                packRow.innerHTML = `
-                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">Pack de ${item.packSize} Barres</td>` : ""}
+            individualBarsTable.innerHTML = "";
+            packsTable.innerHTML = "";
+
+            cart.forEach((item, index) => {
+                if (item.items) {
+                    // 📦 PACK
+                    item.items.forEach((bar, subIndex) => {
+                        const svgImage = bar.svg
+                            ? `<img src="data:image/svg+xml;utf8,${encodeURIComponent(bar.svg)}" alt="Modèle ${bar.model}" style="width: 100px; height: auto;">`
+                            : "❌ Erreur SVG";
+
+                        const colorBoxes = makeColorsHtml(bar.colors);
+
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">Pack de ${item.packSize} barres</td>` : ""}
                             <td>${svgImage}</td>
                             <td>Modèle ${bar.model}</td>
-                            <td>
-                                <div class="color-box">${colorBoxes}</div>
-                            </td>
+                            <td><div class="color-box">${colorBoxes}</div></td>
                             <td>${bar.length || "Non spécifié"}</td>
                             <td>${bar.quantity}</td>
                             ${subIndex === 0 ? `<td rowspan="${item.items.length}">
                                 <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
                             </td>` : ""}
                         `;
-
-                        packsTable.appendChild(packRow);
+                        packsTable.appendChild(row);
                     });
-                } else {
-                    // 🟢 C'est une BARRE INDIVIDUELLE PERSONNALISÉE (Correction ici)
-                    let svgData = item.svg ? `data:image/svg+xml;base64,${btoa(item.svg)}` : "<span style='color:red;'>❌ Erreur</span>";
-                    let colorBoxes = item.colors.map(color => `<div class='color-sample' style='background-color:${color}; width: 20px; height: 20px;'></div>`).join("");
 
-                    let row = document.createElement("tr");
+                } else {
+                    // 🟢 BARRE INDIVIDUELLE (y compris les barres personnalisées)
+                    const svgDataUrl = item.svg
+                        ? `data:image/svg+xml;utf8,${encodeURIComponent(item.svg)}`
+                        : "";
+
+                    const colorBoxes = makeColorsHtml(item.colors);
+
+                    const row = document.createElement("tr");
                     row.innerHTML = `
                         <td>
-                            <img src="${svgData}" alt="Modèle ${item.model}" style="width: 100px; height: auto;">
+                            ${svgDataUrl
+                                ? `<img src="${svgDataUrl}" alt="Modèle ${item.model}" style="width: 100px; height: auto;">`
+                                : "❌ Erreur SVG"}
                         </td>
                         <td>${item.model}</td>
-                        <td>
-                            <div class="color-box">${colorBoxes}</div>
-                        </td>
+                        <td><div class="color-box">${colorBoxes}</div></td>
                         <td>${item.length || "Non spécifié"}</td>
                         <td>
-                            <input type="number" value="${item.quantity}" min="1" id="qty-${index}" style="width: 60px; text-align: center;" onchange="updateQuantity(${index})">
+                            <input type="number" value="${item.quantity}" min="1"
+                                   id="qty-${index}" style="width: 60px; text-align: center;"
+                                   onchange="updateQuantity(${index})">
                         </td>
                         <td>
                             <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
                             <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
                         </td>
                     `;
-
                     individualBarsTable.appendChild(row);
                 }
             });
 
-            console.log("✅ Panier mis à jour.");
+            console.log("✅ Panier affiché.");
         }
-
-
 
         function updateQuantity(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let newQty = parseInt(document.getElementById(`qty-${index}`).value);
+            const input = document.getElementById(`qty-${index}`);
+            const newQty = parseInt(input.value);
 
             if (newQty > 0) {
                 cart[index].quantity = newQty;
                 localStorage.setItem("cart", JSON.stringify(cart));
-                console.log("✅ Quantité mise à jour !");
             } else {
-                alert("La quantité doit être au moins 1");
+                alert("La quantité doit être au moins 1.");
+                input.value = cart[index].quantity;
             }
         }
 
-    
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-            console.log(`🗑️ Suppression de l'élément ${index}:`, cart[index]);
-
             cart.splice(index, 1);
             localStorage.setItem("cart", JSON.stringify(cart));
-
             loadCart();
         }
 
-    
-        document.addEventListener("DOMContentLoaded", () => {
-            console.log("📢 DOM chargé, lancement du chargement du panier...");
-            loadCart();
-        });
-            </script>
+        function redirectToConfig(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const item = cart[index];
 
-
+            // Pour les barres classiques numérotées
+            if (item && item.model && /^\d+$/.test(String(item.model))) {
+                window.location.href = `config.html?model=${item.model}`;
+            } else {
+                alert("Cette barre est personnalisée : modifiez-la depuis sa page de configuration.");
+            }
+        }
+    </script>
 </body>
 
 </html>

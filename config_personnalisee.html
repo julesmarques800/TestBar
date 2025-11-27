@@ -50,16 +50,28 @@
             margin-bottom: 20px;
         }
         
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+        }
+        
         .color-swatch {
             width: 30px;
             height: 30px;
             border-radius: 4px;
             cursor: pointer;
             border: 2px solid #ccc;
+            margin-bottom: 2px;
         }
         
         .selected {
             border: 3px solid #000;
+        }
+        
+        .color-label {
+            min-height: 1em;
         }
         
         #svgContainer svg {
@@ -164,7 +176,7 @@
     </div>
 
     <script>
-        // Palette de couleurs
+        // Palette de couleurs (mêmes hex que le reste du site)
         const colors = [
             "#d0b084", "#ddc49a", "#e6d2b5", "#f1dd38", "#da6e00",
             "#c73f4a", "#bb1e10", "#8d3c4b", "#193153", "#637d96",
@@ -174,38 +186,86 @@
             "#4a3526", "#e9e0d2", "#2b2b2c", "#0e0e10", "#f1ece1", "#f1f0ea"
         ];
 
+        // Mapping hex -> RAL (identique à panier / devis)
+        const hexToRal = {
+            "#d0b084": "RAL 1001",
+            "#ddc49a": "RAL 1014",
+            "#e6d2b5": "RAL 1015",
+            "#f1dd38": "RAL 1016",
+            "#da6e00": "RAL 2000",
+            "#c73f4a": "RAL 3018",
+            "#bb1e10": "RAL 3020",
+            "#8d3c4b": "RAL 4002",
+            "#193153": "RAL 5013",
+            "#637d96": "RAL 5014",
+            "#222d5a": "RAL 5022",
+            "#114232": "RAL 6005",
+            "#61993b": "RAL 6018",
+            "#b9ceac": "RAL 6019",
+            "#8a9977": "RAL 6021",
+            "#575d5e": "RAL 7012",
+            "#4f5358": "RAL 7015",
+            "#383e42": "RAL 7016",
+            "#2f3234": "RAL 7021",
+            "#4c4a44": "RAL 7022",
+            "#c5c7c4": "RAL 7035",
+            "#7a7b7a": "RAL 7037",
+            "#8e9291": "RAL 7042",
+            "#8d9295": "RAL 7045",
+            "#66332b": "RAL 8012",
+            "#4a3526": "RAL 8014",
+            "#e9e0d2": "RAL 9001",
+            "#2b2b2c": "RAL 9004",
+            "#0e0e10": "RAL 9005",
+            "#f1ece1": "RAL 9010",
+            "#f1f0ea": "RAL 9016"
+        };
+
         let selectedColor = colors[0];
-        // Barre plus fine pour ressembler à l’exemple
-        const BAR_HEIGHT = 18;
+        const BAR_HEIGHT = 18; // Barre fine
 
         function getBarLengthCm() {
             const lengthValue = document.getElementById("length").value;
-            if (lengthValue === "3.5m") return 350;
-            return 300; // 3 m
+            return lengthValue === "3.5m" ? 350 : 300;
         }
 
-        // Palette de couleurs
+        // Palette de couleurs AVEC numéro RAL
         function generateColorPalette() {
             const colorPalette = document.getElementById("colorPalette");
             colorPalette.innerHTML = "";
 
             colors.forEach(color => {
+                const ral = hexToRal[color.toLowerCase()] || "";
+
+                const wrapper = document.createElement("div");
+                wrapper.classList.add("color-item");
+
                 const swatch = document.createElement("div");
                 swatch.classList.add("color-swatch");
                 swatch.style.backgroundColor = color;
-                swatch.addEventListener("click", () => {
+                swatch.dataset.color = color;
+
+                const label = document.createElement("div");
+                label.classList.add("color-label");
+                label.textContent = ral;
+
+                wrapper.appendChild(swatch);
+                wrapper.appendChild(label);
+
+                wrapper.addEventListener("click", () => {
                     document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
                     swatch.classList.add("selected");
                     selectedColor = color;
                 });
-                colorPalette.appendChild(swatch);
+
+                colorPalette.appendChild(wrapper);
             });
 
-            const first = colorPalette.querySelector(".color-swatch");
-            if (first) first.classList.add("selected");
+            const firstSwatch = colorPalette.querySelector(".color-swatch");
+            if (firstSwatch) firstSwatch.classList.add("selected");
         }
 
-        // Création / mise à jour des inputs de largeur en cm
+        // Création / MAJ des inputs de largeur en cm
         function updateStripeInputs() {
             let stripeCount = parseInt(document.getElementById("stripeCount").value);
             if (isNaN(stripeCount) || stripeCount < 1) stripeCount = 1;
@@ -216,7 +276,6 @@
             const container = document.getElementById("stripeInputs");
             container.innerHTML = "<strong>Largeur des rayures (en cm) :</strong>";
 
-            // Répartition automatique égale pour démarrer
             const baseWidth = Math.floor(barLengthCm / stripeCount);
             let rest = barLengthCm - baseWidth * (stripeCount - 1);
 
@@ -224,7 +283,7 @@
                 const w = (i === stripeCount) ? rest : baseWidth;
                 const div = document.createElement("div");
                 div.innerHTML = `
-                    Rayure ${i} : 
+                    Rayure ${i} :
                     <input type="number" id="width-${i}" value="${w}" min="1" style="width:80px; text-align:center;"> cm
                 `;
                 container.appendChild(div);
@@ -253,7 +312,7 @@
             totalInfo.textContent = `Total des largeurs : ${total} cm / ${barLengthCm} cm`;
         }
 
-        // Génération de la barre (style proche de ton image)
+        // Génération de la barre
         function generateBar() {
             const svgContainer = document.getElementById("svgContainer");
             svgContainer.innerHTML = "";
@@ -270,7 +329,7 @@
 
             const xmlns = "http://www.w3.org/2000/svg";
             const svg = document.createElementNS(xmlns, "svg");
-            // unités logiques en cm
+            svg.setAttribute("xmlns", xmlns); // important pour l’affichage en miniature
             svg.setAttribute("viewBox", `0 0 ${barLengthCm} ${BAR_HEIGHT}`);
             svg.setAttribute("width", "100%");
             svg.setAttribute("height", "auto");
@@ -323,7 +382,14 @@
             }
 
             const svgContainer = document.getElementById("svgContainer");
-            const svgHtml = svgContainer.innerHTML;
+            const svgElement = svgContainer.querySelector("svg");
+
+            if (!svgElement) {
+                alert("Erreur : la barre n'a pas pu être générée.");
+                return;
+            }
+
+            const svgHtml = svgElement.outerHTML;
 
             if (!svgHtml || svgHtml.trim() === "") {
                 alert("Erreur : la barre n'a pas pu être générée.");
