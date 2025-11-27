@@ -133,6 +133,7 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
         }
         
         .catalog-item:hover {
@@ -178,7 +179,7 @@
             display: block;
             width: 250px;
             text-align: center;
-            margin: 20px auto;
+            margin: 10px auto;
             padding: 15px;
             font-size: 18px;
             background-color: #f1631f;
@@ -231,7 +232,13 @@
 
     <!-- Contenu principal -->
     <main>
-        <a href="choix_pack.html" class="btn btn-pack">Configurer son pack</a>
+        <!-- Nouveau bouton pour la barre 100% personnalisée -->
+        <a href="config_personnalisee.html" class="btn-pack">Créer une barre 100% personnalisée</a>
+        <!-- Bouton existant pour le pack -->
+        <a href="choix_pack.html" class="btn-pack">Configurer son pack</a>
+        <a href="config_personnalisee_forme2.html" class="btn-pack">Créer une palanque 100% personnalisée</a>
+
+
         <h1>Catalogue des barres de CSO</h1>
         <div class="catalog">
             <!-- Chaque élément du catalogue utilise l'image SVG réelle -->

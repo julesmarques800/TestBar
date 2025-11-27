@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barre 100% personnalisée – Forme spéciale</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+            margin-top: 60px;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .controls label {
+            margin: 0 10px;
+        }
+        
+        #stripeInputs {
+            margin: 10px auto 10px;
+            max-width: 500px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        #stripeInputs div {
+            margin: 4px 0;
+        }
+        
+        #totalInfo {
+            margin: 5px auto 15px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        
+        #totalInfo.valid {
+            color: #28a745;
+        }
+        
+        #totalInfo.invalid {
+            color: #c73f4a;
+        }
+        
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .color-swatch {
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            transition: transform 0.2s;
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-swatch.selected {
+            border: 3px solid #000;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        #svgContainer {
+            margin: 20px auto;
+            max-width: 100%;
+        }
+        
+        #svgContainer svg {
+            max-width: 100%;
+            height: auto;
+            background-color: #ffffff;
+            display: block;
+            margin: 10px auto 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary {
+            background-color: #007bff;
+        }
+        
+        .btn-reset {
+            background-color: #6c757d;
+        }
+        
+        .btn:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-retour {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .btn-retour:hover {
+            opacity: 0.85;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        input[type="number"],
+        select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .btn-retour {
+                position: static;
+                margin-bottom: 20px;
+            }
+            h1 {
+                margin-top: 20px;
+                font-size: 1.5em;
+            }
+            .controls {
+                padding: 10px;
+            }
+            .color-swatch {
+                width: 30px;
+                height: 30px;
+            }
+            .notification {
+                top: 20px;
+                right: 10px;
+                left: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
+
+    <h1>Barre 100% personnalisée – Forme spéciale</h1>
+    <p>Personnalisez votre barre avec la forme à découpes. Cliquez sur les rayures pour les colorer.</p>
+
+    <div class="controls">
+        <div class="control-group">
+            <label for="stripeCount">
+                Nombre de rayures :
+                <input type="number" id="stripeCount" min="1" max="20" value="3" style="width: 60px; text-align: center;" aria-label="Nombre de rayures">
+            </label>
+            <button class="btn btn-secondary" type="button" onclick="updateStripeInputs()">Définir les rayures</button>
+        </div>
+
+        <div class="control-group">
+            <label for="length">
+                Longueur :
+                <select id="length" aria-label="Longueur de la barre">
+                    <option value="3m">3 m (300 cm)</option>
+                    <option value="3.5m">3,50 m (350 cm)</option>
+                </select>
+            </label>
+
+            <label for="quantity">
+                Quantité :
+                <input type="number" id="quantity" min="1" value="1" style="width: 60px; text-align: center;" aria-label="Quantité">
+            </label>
+
+            <button class="btn btn-secondary" id="regenerateBtn" type="button">Mettre à jour la barre</button>
+            <button class="btn btn-reset" id="resetBtn" type="button">Réinitialiser</button>
+        </div>
+    </div>
+
+    <div id="stripeInputs"></div>
+    <div id="totalInfo"></div>
+
+    <p style="margin-bottom: 10px;"><strong>Sélectionnez une couleur, puis cliquez sur les rayures :</strong></p>
+    <div class="color-palette" id="colorPalette" role="group" aria-label="Palette de couleurs"></div>
+    <div id="svgContainer"></div>
+
+    <div class="button-container">
+        <button class="btn" id="addToCartBtn" onclick="addToCart()">Ajouter au panier</button>
+        <a href="panier.html" class="btn btn-secondary">Voir le panier</a>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        const colors = [
+            "#d0b084", "#ddc49a", "#e6d2b5", "#f1dd38", "#da6e00",
+            "#c73f4a", "#bb1e10", "#8d3c4b", "#193153", "#637d96",
+            "#222d5a", "#114232", "#61993b", "#b9ceac", "#8a9977",
+            "#575d5e", "#4f5358", "#383e42", "#2f3234", "#4c4a44",
+            "#c5c7c4", "#7a7b7a", "#8e9291", "#8d9295", "#66332b",
+            "#4a3526", "#e9e0d2", "#2b2b2c", "#0e0e10", "#f1ece1", "#f1f0ea"
+        ];
+
+        let selectedColor = colors[0];
+        const BAR_HEIGHT = 24;
+        let debounceTimer = null;
+
+        function getBarLengthCm() {
+            const lengthValue = document.getElementById("length").value;
+            return lengthValue === "3.5m" ? 350 : 300;
+        }
+
+        function createBarPath(length, height) {
+            const capWidth = length * 0.05;
+            const notchWidth = length * 0.10;
+            const notchDepth = height * 0.35;
+
+            const yTop = 0;
+            const yBottom = height;
+            const yNotch = height - notchDepth;
+
+            const rightCapStart = length - capWidth;
+            const rightNotchStart = rightCapStart - notchWidth;
+            const leftCapEnd = capWidth;
+            const leftNotchEnd = leftCapEnd + notchWidth;
+
+            return [
+                `M 0 ${yTop}`,
+                `H ${length}`,
+                `V ${yBottom}`,
+                `H ${rightCapStart}`,
+                `Q ${rightNotchStart + notchWidth / 2} ${yNotch} ${rightNotchStart} ${yBottom}`,
+                `H ${leftNotchEnd}`,
+                `Q ${leftCapEnd + notchWidth / 2} ${yNotch} ${leftCapEnd} ${yBottom}`,
+                `H 0`,
+                `Z`
+            ].join(" ");
+        }
+
+        function generateColorPalette() {
+            const colorPalette = document.getElementById("colorPalette");
+            colorPalette.innerHTML = "";
+
+            colors.forEach((color, index) => {
+                const swatch = document.createElement("div");
+                swatch.classList.add("color-swatch");
+                swatch.style.backgroundColor = color;
+                swatch.setAttribute("role", "button");
+                swatch.setAttribute("aria-label", `Couleur ${index + 1}`);
+                swatch.setAttribute("tabindex", "0");
+
+                const selectColor = () => {
+                    document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
+                    swatch.classList.add("selected");
+                    selectedColor = color;
+                };
+
+                swatch.addEventListener("click", selectColor);
+                swatch.addEventListener("keypress", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        selectColor();
+                    }
+                });
+
+                colorPalette.appendChild(swatch);
+            });
+
+            const first = colorPalette.querySelector(".color-swatch");
+            if (first) first.classList.add("selected");
+        }
+
+        function updateStripeInputs() {
+            let stripeCount = parseInt(document.getElementById("stripeCount").value);
+            stripeCount = Math.max(1, Math.min(20, stripeCount || 1));
+            document.getElementById("stripeCount").value = stripeCount;
+
+            const barLengthCm = getBarLengthCm();
+            const container = document.getElementById("stripeInputs");
+            container.innerHTML = "<strong>Largeur des rayures (en cm) :</strong>";
+
+            const baseWidth = Math.floor(barLengthCm / stripeCount);
+            let rest = barLengthCm - baseWidth * (stripeCount - 1);
+
+            for (let i = 1; i <= stripeCount; i++) {
+                const w = (i === stripeCount) ? rest : baseWidth;
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    Rayure ${i} : 
+                    <input type="number" id="width-${i}" value="${w}" min="1" max="${barLengthCm}" 
+                           style="width:80px; text-align:center;" aria-label="Largeur rayure ${i}"> cm
+                `;
+                container.appendChild(div);
+            }
+
+            updateTotalInfo();
+        }
+
+        function getStripeWidthsCm() {
+            const stripeCount = parseInt(document.getElementById("stripeCount").value);
+            let widths = [];
+            for (let i = 1; i <= stripeCount; i++) {
+                const input = document.getElementById(`width-${i}`);
+                let val = input ? parseInt(input.value) : 0;
+                widths.push(Math.max(1, val || 1));
+            }
+            return widths;
+        }
+
+        function updateTotalInfo() {
+            const barLengthCm = getBarLengthCm();
+            const widths = getStripeWidthsCm();
+            const total = widths.reduce((a, b) => a + b, 0);
+            const totalInfo = document.getElementById("totalInfo");
+
+            totalInfo.textContent = `Total des largeurs : ${total} cm / ${barLengthCm} cm`;
+
+            if (total === barLengthCm) {
+                totalInfo.className = 'valid';
+            } else {
+                totalInfo.className = 'invalid';
+            }
+        }
+
+        function generateBar() {
+            const svgContainer = document.getElementById("svgContainer");
+            const barLengthCm = getBarLengthCm();
+            const widths = getStripeWidthsCm();
+            const totalCm = widths.reduce((a, b) => a + b, 0);
+
+            if (totalCm !== barLengthCm) {
+                showNotification(`La somme des largeurs (${totalCm} cm) doit être égale à ${barLengthCm} cm`, 'error');
+                return;
+            }
+
+            svgContainer.innerHTML = "";
+
+            const xmlns = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(xmlns, "svg");
+            svg.setAttribute("viewBox", `0 0 ${barLengthCm} ${BAR_HEIGHT}`);
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "auto");
+            svg.setAttribute("role", "img");
+            svg.setAttribute("aria-label", "Prévisualisation de la barre personnalisée");
+
+            const pathD = createBarPath(barLengthCm, BAR_HEIGHT);
+
+            const defs = document.createElementNS(xmlns, "defs");
+            const clip = document.createElementNS(xmlns, "clipPath");
+            clip.setAttribute("id", "barShapeClip");
+            const clipPath = document.createElementNS(xmlns, "path");
+            clipPath.setAttribute("d", pathD);
+            clip.appendChild(clipPath);
+            defs.appendChild(clip);
+            svg.appendChild(defs);
+
+            const group = document.createElementNS(xmlns, "g");
+            group.setAttribute("clip-path", "url(#barShapeClip)");
+
+            let xPosition = 0;
+            widths.forEach((w, i) => {
+                const rect = document.createElementNS(xmlns, "rect");
+                rect.setAttribute("id", `stripe-${i + 1}`);
+                rect.setAttribute("x", xPosition);
+                rect.setAttribute("y", 0);
+                rect.setAttribute("width", w);
+                rect.setAttribute("height", BAR_HEIGHT);
+                rect.setAttribute("fill", "#f4a462");
+                rect.style.cursor = "pointer";
+                rect.setAttribute("data-stripe", i + 1);
+
+                rect.addEventListener("click", function() {
+                    this.setAttribute("fill", selectedColor);
+                });
+
+                group.appendChild(rect);
+                xPosition += w;
+            });
+
+            svg.appendChild(group);
+
+            const outline = document.createElementNS(xmlns, "path");
+            outline.setAttribute("d", pathD);
+            outline.setAttribute("fill", "none");
+            outline.setAttribute("stroke", "#555555");
+            outline.setAttribute("stroke-width", "0.7");
+            outline.setAttribute("shape-rendering", "crispEdges");
+            svg.appendChild(outline);
+
+            svgContainer.appendChild(svg);
+            updateTotalInfo();
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.backgroundColor = type === 'error' ? '#c73f4a' : '#28a745';
+            notification.style.display = 'block';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        function addToCart() {
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const length = document.getElementById("length").value;
+            const stripeCount = parseInt(document.getElementById("stripeCount").value);
+
+            if (!quantity || quantity <= 0) {
+                showNotification("Veuillez entrer une quantité valide.", 'error');
+                return;
+            }
+
+            const barLengthCm = getBarLengthCm();
+            const widths = getStripeWidthsCm();
+            const totalCm = widths.reduce((a, b) => a + b, 0);
+
+            if (totalCm !== barLengthCm) {
+                showNotification(`La somme des largeurs doit être égale à ${barLengthCm} cm`, 'error');
+                return;
+            }
+
+            const svgContainer = document.getElementById("svgContainer");
+            const svgHtml = svgContainer.innerHTML;
+
+            if (!svgHtml || svgHtml.trim() === "") {
+                showNotification("Erreur : la barre n'a pas pu être générée.", 'error');
+                return;
+            }
+
+            const filledStripes = svgContainer.querySelectorAll("svg rect[fill]");
+            let colorsUsed = [...new Set(
+                Array.from(filledStripes)
+                .map(el => el.getAttribute("fill"))
+                .filter(c => c && c !== "none" && c.toLowerCase() !== "#ffffff" && c.toLowerCase() !== "white")
+            )];
+
+            if (colorsUsed.length === 0) {
+                showNotification("Veuillez colorer au moins une rayure.", 'error');
+                return;
+            }
+
+            try {
+                let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+                cart.push({
+                    model: "BARRE FORMÉE PERSONNALISÉE",
+                    colors: colorsUsed,
+                    quantity: quantity,
+                    length: length,
+                    svg: svgHtml,
+                    stripes: stripeCount,
+                    widths_cm: widths,
+                    total_length_cm: barLengthCm
+                });
+
+                localStorage.setItem("cart", JSON.stringify(cart));
+                showNotification("Barre ajoutée au panier !");
+            } catch (e) {
+                showNotification("Erreur lors de l'ajout au panier.", 'error');
+                console.error(e);
+            }
+        }
+
+        function resetBar() {
+            document.getElementById("stripeCount").value = 3;
+            document.getElementById("length").value = "3m";
+            document.getElementById("quantity").value = 1;
+            updateStripeInputs();
+            generateBar();
+            showNotification("Barre réinitialisée");
+        }
+
+        function debounceUpdate() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                updateTotalInfo();
+            }, 300);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            generateColorPalette();
+            updateStripeInputs();
+            generateBar();
+
+            document.getElementById("regenerateBtn").addEventListener("click", generateBar);
+            document.getElementById("resetBtn").addEventListener("click", resetBar);
+
+            document.getElementById("stripeCount").addEventListener("change", () => {
+                updateStripeInputs();
+                generateBar();
+            });
+
+            document.getElementById("length").addEventListener("change", () => {
+                updateStripeInputs();
+                generateBar();
+            });
+
+            document.addEventListener("input", (e) => {
+                if (e.target && e.target.id && e.target.id.startsWith("width-")) {
+                    debounceUpdate();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

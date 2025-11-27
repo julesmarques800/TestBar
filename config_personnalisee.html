@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Barre 100% personnalisée</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+        }
+        
+        .controls label {
+            margin: 0 10px;
+        }
+        
+        #stripeInputs {
+            margin: 10px auto 10px;
+            max-width: 500px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        #stripeInputs div {
+            margin: 4px 0;
+        }
+        
+        #totalInfo {
+            margin: 5px auto 15px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .color-swatch {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid #ccc;
+        }
+        
+        .selected {
+            border: 3px solid #000;
+        }
+        
+        #svgContainer svg {
+            max-width: 100%;
+            height: auto;
+            background-color: #ffffff;
+            display: block;
+            margin: 10px auto 20px;
+        }
+        
+        .button-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+        
+        .btn-secondary {
+            background-color: #007bff;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .btn-retour {
+            position: absolute;
+            top: 30px;
+            left: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="btn-retour">Retour à l'accueil</a>
+
+    <h1>Barre 100% personnalisée</h1>
+    <p>Choisissez le nombre de rayures, leur largeur en cm, les couleurs et ajoutez votre barre au panier.</p>
+
+    <div class="controls">
+        <div style="margin-bottom: 10px;">
+            <label for="stripeCount">
+                Nombre de rayures :
+                <input type="number" id="stripeCount" min="1" max="20" value="3" style="width: 60px; text-align: center;">
+            </label>
+            <button class="btn btn-secondary" type="button" onclick="updateStripeInputs()">Définir les rayures</button>
+        </div>
+
+        <div>
+            <label for="length">
+                Longueur :
+                <select id="length">
+                    <option value="3m">3 m (300 cm)</option>
+                    <option value="3.5m">3,50 m (350 cm)</option>
+                </select>
+            </label>
+
+            <label for="quantity">
+                Quantité :
+                <input type="number" id="quantity" min="1" value="1" style="width: 60px; text-align: center;">
+            </label>
+
+            <button class="btn btn-secondary" id="regenerateBtn" type="button">Mettre à jour la barre</button>
+        </div>
+    </div>
+
+    <div id="stripeInputs"></div>
+    <div id="totalInfo"></div>
+
+    <div class="color-palette" id="colorPalette"></div>
+    <div id="svgContainer"></div>
+
+    <div class="button-container">
+        <button class="btn" onclick="addToCart()">Ajouter au panier</button>
+        <a href="panier.html" class="btn btn-secondary">Voir le panier</a>
+    </div>
+
+    <script>
+        // Palette de couleurs
+        const colors = [
+            "#d0b084", "#ddc49a", "#e6d2b5", "#f1dd38", "#da6e00",
+            "#c73f4a", "#bb1e10", "#8d3c4b", "#193153", "#637d96",
+            "#222d5a", "#114232", "#61993b", "#b9ceac", "#8a9977",
+            "#575d5e", "#4f5358", "#383e42", "#2f3234", "#4c4a44",
+            "#c5c7c4", "#7a7b7a", "#8e9291", "#8d9295", "#66332b",
+            "#4a3526", "#e9e0d2", "#2b2b2c", "#0e0e10", "#f1ece1", "#f1f0ea"
+        ];
+
+        let selectedColor = colors[0];
+        // Barre plus fine pour ressembler à l’exemple
+        const BAR_HEIGHT = 18;
+
+        function getBarLengthCm() {
+            const lengthValue = document.getElementById("length").value;
+            if (lengthValue === "3.5m") return 350;
+            return 300; // 3 m
+        }
+
+        // Palette de couleurs
+        function generateColorPalette() {
+            const colorPalette = document.getElementById("colorPalette");
+            colorPalette.innerHTML = "";
+
+            colors.forEach(color => {
+                const swatch = document.createElement("div");
+                swatch.classList.add("color-swatch");
+                swatch.style.backgroundColor = color;
+                swatch.addEventListener("click", () => {
+                    document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
+                    swatch.classList.add("selected");
+                    selectedColor = color;
+                });
+                colorPalette.appendChild(swatch);
+            });
+
+            const first = colorPalette.querySelector(".color-swatch");
+            if (first) first.classList.add("selected");
+        }
+
+        // Création / mise à jour des inputs de largeur en cm
+        function updateStripeInputs() {
+            let stripeCount = parseInt(document.getElementById("stripeCount").value);
+            if (isNaN(stripeCount) || stripeCount < 1) stripeCount = 1;
+            if (stripeCount > 20) stripeCount = 20;
+            document.getElementById("stripeCount").value = stripeCount;
+
+            const barLengthCm = getBarLengthCm();
+            const container = document.getElementById("stripeInputs");
+            container.innerHTML = "<strong>Largeur des rayures (en cm) :</strong>";
+
+            // Répartition automatique égale pour démarrer
+            const baseWidth = Math.floor(barLengthCm / stripeCount);
+            let rest = barLengthCm - baseWidth * (stripeCount - 1);
+
+            for (let i = 1; i <= stripeCount; i++) {
+                const w = (i === stripeCount) ? rest : baseWidth;
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    Rayure ${i} : 
+                    <input type="number" id="width-${i}" value="${w}" min="1" style="width:80px; text-align:center;"> cm
+                `;
+                container.appendChild(div);
+            }
+
+            updateTotalInfo();
+        }
+
+        function getStripeWidthsCm() {
+            const stripeCount = parseInt(document.getElementById("stripeCount").value);
+            let widths = [];
+            for (let i = 1; i <= stripeCount; i++) {
+                const input = document.getElementById(`width-${i}`);
+                let val = input ? parseInt(input.value) : 0;
+                if (isNaN(val) || val < 1) val = 1;
+                widths.push(val);
+            }
+            return widths;
+        }
+
+        function updateTotalInfo() {
+            const barLengthCm = getBarLengthCm();
+            const widths = getStripeWidthsCm();
+            const total = widths.reduce((a, b) => a + b, 0);
+            const totalInfo = document.getElementById("totalInfo");
+            totalInfo.textContent = `Total des largeurs : ${total} cm / ${barLengthCm} cm`;
+        }
+
+        // Génération de la barre (style proche de ton image)
+        function generateBar() {
+            const svgContainer = document.getElementById("svgContainer");
+            svgContainer.innerHTML = "";
+
+            const barLengthCm = getBarLengthCm();
+            const widths = getStripeWidthsCm();
+            const totalCm = widths.reduce((a, b) => a + b, 0);
+
+            if (totalCm !== barLengthCm) {
+                alert(`La somme des largeurs (${totalCm} cm) doit être égale à la longueur de la barre (${barLengthCm} cm).`);
+                updateTotalInfo();
+                return;
+            }
+
+            const xmlns = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(xmlns, "svg");
+            // unités logiques en cm
+            svg.setAttribute("viewBox", `0 0 ${barLengthCm} ${BAR_HEIGHT}`);
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "auto");
+
+            let xPosition = 0;
+
+            widths.forEach((w, i) => {
+                const rect = document.createElementNS(xmlns, "rect");
+                rect.setAttribute("id", `stripe-${i + 1}`);
+                rect.setAttribute("x", xPosition);
+                rect.setAttribute("y", 0);
+                rect.setAttribute("width", w);
+                rect.setAttribute("height", BAR_HEIGHT);
+                rect.setAttribute("fill", "#ffffff");
+                rect.setAttribute("stroke", "#555555");
+                rect.setAttribute("stroke-width", "0.7");
+                rect.setAttribute("shape-rendering", "crispEdges");
+                rect.style.cursor = "pointer";
+
+                rect.addEventListener("click", () => {
+                    rect.setAttribute("fill", selectedColor);
+                });
+
+                svg.appendChild(rect);
+                xPosition += w;
+            });
+
+            svgContainer.appendChild(svg);
+            updateTotalInfo();
+        }
+
+        // Ajouter au panier
+        function addToCart() {
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const length = document.getElementById("length").value;
+            const stripeCount = parseInt(document.getElementById("stripeCount").value);
+
+            if (!quantity || quantity <= 0) {
+                alert("Veuillez entrer une quantité valide.");
+                return;
+            }
+
+            const barLengthCm = getBarLengthCm();
+            const widths = getStripeWidthsCm();
+            const totalCm = widths.reduce((a, b) => a + b, 0);
+
+            if (totalCm !== barLengthCm) {
+                alert(`La somme des largeurs (${totalCm} cm) doit être égale à la longueur de la barre (${barLengthCm} cm) avant d'ajouter au panier.`);
+                return;
+            }
+
+            const svgContainer = document.getElementById("svgContainer");
+            const svgHtml = svgContainer.innerHTML;
+
+            if (!svgHtml || svgHtml.trim() === "") {
+                alert("Erreur : la barre n'a pas pu être générée.");
+                return;
+            }
+
+            const filledStripes = svgContainer.querySelectorAll("svg rect[fill]");
+            let colorsUsed = [...new Set(
+                Array.from(filledStripes)
+                .map(el => el.getAttribute("fill"))
+                .filter(c => c && c !== "none" && c.toLowerCase() !== "#ffffff" && c.toLowerCase() !== "white")
+            )];
+
+            if (colorsUsed.length === 0) {
+                alert("Veuillez colorer au moins une rayure.");
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            cart.push({
+                model: "BARRE PERSONNALISÉE",
+                colors: colorsUsed,
+                quantity: quantity,
+                length: length,
+                svg: svgHtml,
+                stripes: stripeCount,
+                widths_cm: widths,
+                total_length_cm: barLengthCm
+            });
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Barre personnalisée ajoutée au panier !");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            generateColorPalette();
+            updateStripeInputs();
+            generateBar();
+
+            document.getElementById("regenerateBtn").addEventListener("click", generateBar);
+
+            document.getElementById("stripeCount").addEventListener("change", () => {
+                updateStripeInputs();
+                generateBar();
+            });
+
+            document.getElementById("length").addEventListener("change", () => {
+                updateStripeInputs();
+                generateBar();
+            });
+
+            document.addEventListener("input", (e) => {
+                if (e.target && e.target.id && e.target.id.startsWith("width-")) {
+                    updateTotalInfo();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
