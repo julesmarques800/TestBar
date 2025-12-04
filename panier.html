@@ -3,143 +3,355 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panier</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            text-align: center;
-            padding: 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
             background: white;
         }
         
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 10px;
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 60px;
+            border-bottom: 4px solid #e74c3c;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 2.2em;
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .main-content {
+            padding: 40px 60px;
+        }
+        
+        .stats-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 30px;
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .stat-item {
             text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #e74c3c;
         }
         
-        th {
-            background-color: #4CAF50;
-            color: white;
+        .stat-number {
+            font-size: 3em;
+            font-weight: 300;
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
         }
         
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #28a745;
-            color: white;
-            margin: 5px 0;
-            text-decoration: none;
+        .stat-label {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .btn-remove {
-            background-color: #dc3545;
+        .section-title {
+            color: #2c3e50;
+            font-size: 1.6em;
+            margin: 40px 0 20px 0;
+            font-weight: 300;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .btn-remove:hover {
-            background-color: #c82333;
+        .cart-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 30px;
         }
         
-        .btn-update {
-            background-color: #007bff;
+        .cart-item {
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            gap: 30px;
+            padding: 30px;
+            border-bottom: 1px solid #ecf0f1;
+            align-items: center;
+            transition: background 0.2s;
         }
         
-        .btn-update:hover {
-            background-color: #0056b3;
+        .cart-item:hover {
+            background: #fafafa;
         }
         
-        .btn-devis {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #28a745;
-            color: white;
-            margin: 5px 0;
-            text-decoration: none;
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-image {
+            width: 120px;
+            height: auto;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            background: white;
+        }
+        
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .item-model {
+            font-size: 1.3em;
+            font-weight: 400;
+            color: #2c3e50;
+        }
+        
+        .item-length {
+            color: #7f8c8d;
+            font-size: 0.95em;
         }
         
         .color-box {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            gap: 8px;
+            margin-top: 5px;
         }
         
         .color-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 2px 4px;
-            font-size: 11px;
+            gap: 4px;
         }
         
         .color-sample {
-            width: 40px;
-            height: 20px;
-            border: 1px solid #000;
-            margin-bottom: 2px;
+            width: 45px;
+            height: 25px;
+            border: 1px solid #bdc3c7;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-label {
+            font-size: 0.7em;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .item-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #bdc3c7;
+            padding: 6px;
+            font-size: 1em;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            font-size: 0.9em;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #c0392b;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #229954;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .bottom-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 40px 0;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .pack-header {
+            background: #34495e;
+            color: white;
+            padding: 20px 30px;
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .pack-title {
+            font-size: 1.2em;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 80px 20px;
+            color: #95a5a6;
+        }
+        
+        .empty-cart-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .item-actions {
+                align-items: center;
+            }
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+            }
+            header,
+            .main-content {
+                padding: 20px 30px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>Votre Panier</h1>
+    <div class="container">
+        <header>
+            <h1>🛒 Votre Panier</h1>
+        </header>
 
-    <h2>🔹 Barres Individuelles</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Modèle</th>
-                <th>Couleurs</th>
-                <th>Longueur</th>
-                <th>Quantité</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="individualBarsTable">
-            <!-- Barres individuelles -->
-        </tbody>
-    </table>
+        <div class="main-content">
+            <div class="stats-card">
+                <div class="stat-item">
+                    <span class="stat-number" id="count3m">0</span>
+                    <span class="stat-label">Barres de 3m</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="count35m">0</span>
+                    <span class="stat-label">Barres de 3,5m</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="countTotal">0</span>
+                    <span class="stat-label">Total de barres</span>
+                </div>
+            </div>
 
-    <h2>📦 Packs de Barres</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Pack</th>
-                <th>Image</th>
-                <th>Modèle</th>
-                <th>Couleurs</th>
-                <th>Longueur</th>
-                <th>Quantité</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="packsTable">
-            <!-- Packs -->
-        </tbody>
-    </table>
+            <div id="individualSection" style="display: none;">
+                <h2 class="section-title">🔹 Barres Individuelles</h2>
+                <div class="cart-section" id="individualBarsContainer"></div>
+            </div>
 
-    <br>
-    <a href="index.html" class="btn">Retour à l'accueil</a>
-    <a href="choix_pack.html" class="btn">Retour Pack</a>
-    <a href="devis.html" class="btn-devis">Envoyer le devis</a>
+            <div id="packsSection" style="display: none;">
+                <h2 class="section-title">📦 Packs de Barres</h2>
+                <div class="cart-section" id="packsContainer"></div>
+            </div>
+
+            <div id="emptyCart" class="cart-section empty-cart" style="display: none;">
+                <div class="empty-cart-icon">🛒</div>
+                <h3>Votre panier est vide</h3>
+                <p>Ajoutez des barres pour commencer</p>
+            </div>
+
+            <div class="bottom-actions">
+                <a href="index.html" class="btn btn-secondary">← Retour à l'accueil</a>
+                <a href="choix_pack.html" class="btn btn-secondary">← Retour Pack</a>
+                <a href="devis.html" class="btn btn-success">Envoyer le devis →</a>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // même mapping que dans devis.html
         const hexToRal = {
             "#d0b084": "RAL 1001",
             "#ddc49a": "RAL 1014",
@@ -181,88 +393,166 @@
             loadCart();
         });
 
-        function makeColorsHtml(colors) {
-            if (!colors) return "";
+        function makeColorsHtml(colors, customRal) {
+            if (!colors || colors.length === 0) return "";
             return colors.map(c => {
                         const hex = c.toLowerCase();
-                        const ral = hexToRal[hex] || "";
+                        const ralLabel = hexToRal[hex] || (customRal || "");
                         return `
                     <div class="color-item">
                         <div class="color-sample" style="background-color:${c};"></div>
-                        ${ral ? `<div>${ral}</div>` : ""}
+                        ${ralLabel ? `<div class="color-label">${ralLabel}</div>` : ""}
                     </div>
                 `;
             }).join("");
+        }
+
+        function updateStats(cart) {
+            let count3m = 0;
+            let count35m = 0;
+
+            cart.forEach(item => {
+                if (!item.items) {
+                    const qty = item.quantity || 1;
+                    if (item.length === "3m") count3m += qty;
+                    if (item.length === "3.5m") count35m += qty;
+                } else {
+                    item.items.forEach(bar => {
+                        const qty = bar.quantity || 1;
+                        if (bar.length === "3m") count3m += qty;
+                        if (bar.length === "3.5m") count35m += qty;
+                    });
+                }
+            });
+
+            const total = count3m + count35m;
+            document.getElementById("count3m").textContent = count3m;
+            document.getElementById("count35m").textContent = count35m;
+            document.getElementById("countTotal").textContent = total;
         }
 
         function loadCart() {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             console.log("📦 Contenu du panier :", cart);
 
-            const individualBarsTable = document.getElementById("individualBarsTable");
-            const packsTable = document.getElementById("packsTable");
+            updateStats(cart);
 
-            individualBarsTable.innerHTML = "";
-            packsTable.innerHTML = "";
+            const individualContainer = document.getElementById("individualBarsContainer");
+            const packsContainer = document.getElementById("packsContainer");
+            const individualSection = document.getElementById("individualSection");
+            const packsSection = document.getElementById("packsSection");
+            const emptyCart = document.getElementById("emptyCart");
 
-            cart.forEach((item, index) => {
-                if (item.items) {
-                    // 📦 PACK
-                    item.items.forEach((bar, subIndex) => {
-                        const svgImage = bar.svg
-                            ? `<img src="data:image/svg+xml;utf8,${encodeURIComponent(bar.svg)}" alt="Modèle ${bar.model}" style="width: 100px; height: auto;">`
-                            : "❌ Erreur SVG";
+            individualContainer.innerHTML = "";
+            packsContainer.innerHTML = "";
 
-                        const colorBoxes = makeColorsHtml(bar.colors);
+            const individualItems = cart.filter(item => !item.items);
+            const packItems = cart.filter(item => item.items);
 
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">Pack de ${item.packSize} barres</td>` : ""}
-                            <td>${svgImage}</td>
-                            <td>Modèle ${bar.model}</td>
-                            <td><div class="color-box">${colorBoxes}</div></td>
-                            <td>${bar.length || "Non spécifié"}</td>
-                            <td>${bar.quantity}</td>
-                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">
-                                <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
-                            </td>` : ""}
-                        `;
-                        packsTable.appendChild(row);
-                    });
+            if (cart.length === 0) {
+                emptyCart.style.display = "block";
+                individualSection.style.display = "none";
+                packsSection.style.display = "none";
+                return;
+            }
 
-                } else {
-                    // 🟢 BARRE INDIVIDUELLE (y compris les barres personnalisées)
-                    const svgDataUrl = item.svg
-                        ? `data:image/svg+xml;utf8,${encodeURIComponent(item.svg)}`
-                        : "";
+            emptyCart.style.display = "none";
 
-                    const colorBoxes = makeColorsHtml(item.colors);
+            if (individualItems.length > 0) {
+                individualSection.style.display = "block";
+                individualItems.forEach((item, index) => {
+                    const originalIndex = cart.indexOf(item);
+                    const itemHtml = createIndividualItemHtml(item, originalIndex);
+                    individualContainer.innerHTML += itemHtml;
+                });
+            } else {
+                individualSection.style.display = "none";
+            }
 
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>
-                            ${svgDataUrl
-                                ? `<img src="${svgDataUrl}" alt="Modèle ${item.model}" style="width: 100px; height: auto;">`
-                                : "❌ Erreur SVG"}
-                        </td>
-                        <td>${item.model}</td>
-                        <td><div class="color-box">${colorBoxes}</div></td>
-                        <td>${item.length || "Non spécifié"}</td>
-                        <td>
-                            <input type="number" value="${item.quantity}" min="1"
-                                   id="qty-${index}" style="width: 60px; text-align: center;"
-                                   onchange="updateQuantity(${index})">
-                        </td>
-                        <td>
-                            <button class="btn btn-update" onclick="redirectToConfig(${index})">Modifier</button>
-                            <button class="btn btn-remove" onclick="removeFromCart(${index})">Supprimer</button>
-                        </td>
-                    `;
-                    individualBarsTable.appendChild(row);
-                }
-            });
+            if (packItems.length > 0) {
+                packsSection.style.display = "block";
+                packItems.forEach((pack, index) => {
+                    const originalIndex = cart.indexOf(pack);
+                    const packHtml = createPackHtml(pack, originalIndex);
+                    packsContainer.innerHTML += packHtml;
+                });
+            } else {
+                packsSection.style.display = "none";
+            }
 
             console.log("✅ Panier affiché.");
+        }
+
+        function createIndividualItemHtml(item, index) {
+            const svgDataUrl = item.svg
+                ? `data:image/svg+xml;utf8,${encodeURIComponent(item.svg)}`
+                : "";
+
+            const colorBoxes = makeColorsHtml(item.colors, item.custom_ral || null);
+
+            return `
+                <div class="cart-item">
+                    <div>
+                        ${svgDataUrl
+                            ? `<img src="${svgDataUrl}" alt="Modèle ${item.model}" class="item-image">`
+                            : '<div class="item-image" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;">❌</div>'}
+                    </div>
+                    <div class="item-details">
+                        <div class="item-model">Modèle ${item.model}</div>
+                        <div class="item-length">📏 Longueur : ${item.length || "Non spécifié"}</div>
+                        <div class="color-box">${colorBoxes}</div>
+                    </div>
+                    <div class="item-actions">
+                        <div class="quantity-control">
+                            <label>Quantité :</label>
+                            <input type="number" value="${item.quantity}" min="1"
+                                   id="qty-${index}" class="quantity-input"
+                                   onchange="updateQuantity(${index})">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" onclick="redirectToConfig(${index})">Modifier</button>
+                            <button class="btn btn-danger" onclick="removeFromCart(${index})">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createPackHtml(pack, packIndex) {
+            let packHtml = `<div class="pack-header">
+                <span class="pack-title">📦 Pack de ${pack.packSize} barres</span>
+                <button class="btn btn-danger" onclick="removeFromCart(${packIndex})">Supprimer le pack</button>
+            </div>`;
+
+            pack.items.forEach((bar) => {
+                const svgImage = bar.svg
+                    ? `data:image/svg+xml;utf8,${encodeURIComponent(bar.svg)}`
+                    : "";
+
+                const colorBoxes = makeColorsHtml(bar.colors, bar.custom_ral || null);
+
+                packHtml += `
+                    <div class="cart-item">
+                        <div>
+                            ${svgImage
+                                ? `<img src="${svgImage}" alt="Modèle ${bar.model}" class="item-image">`
+                                : '<div class="item-image" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;">❌</div>'}
+                        </div>
+                        <div class="item-details">
+                            <div class="item-model">Modèle ${bar.model}</div>
+                            <div class="item-length">📏 Longueur : ${bar.length || "Non spécifié"}</div>
+                            <div class="color-box">${colorBoxes}</div>
+                        </div>
+                        <div class="item-actions">
+                            <div class="quantity-control">
+                                <span>Quantité : ${bar.quantity}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            return packHtml;
         }
 
         function updateQuantity(index) {
@@ -273,6 +563,7 @@
             if (newQty > 0) {
                 cart[index].quantity = newQty;
                 localStorage.setItem("cart", JSON.stringify(cart));
+                loadCart();
             } else {
                 alert("La quantité doit être au moins 1.");
                 input.value = cart[index].quantity;
@@ -290,7 +581,6 @@
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             const item = cart[index];
 
-            // Pour les barres classiques numérotées
             if (item && item.model && /^\d+$/.test(String(item.model))) {
                 window.location.href = `config.html?model=${item.model}`;
             } else {

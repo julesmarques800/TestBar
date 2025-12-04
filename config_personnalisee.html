@@ -3,50 +3,128 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barre 100% personnalisée</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #2c3e50;
+        }
+        
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 60px;
+            border-bottom: 4px solid #e74c3c;
+            position: relative;
         }
         
         h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            letter-spacing: 1px;
             margin-bottom: 10px;
         }
         
+        header p {
+            color: #ecf0f1;
+            font-size: 0.95em;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+        
+        .btn-retour {
+            position: absolute;
+            top: 30px;
+            left: 60px;
+            padding: 10px 24px;
+            font-size: 0.9em;
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        
+        .btn-retour:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 60px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 300;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+        }
+        
         .controls {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
             margin-bottom: 20px;
         }
         
-        .controls label {
-            margin: 0 10px;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         
-        #stripeInputs {
-            margin: 10px auto 10px;
-            max-width: 500px;
-            text-align: left;
-            font-size: 14px;
+        .control-group label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 400;
         }
         
-        #stripeInputs div {
-            margin: 4px 0;
+        .control-group select,
+        .control-group input[type="number"] {
+            padding: 10px 15px;
+            border: 1px solid #bdc3c7;
+            font-size: 1em;
+            background: white;
         }
         
-        #totalInfo {
-            margin: 5px auto 15px;
-            font-size: 13px;
-            color: #555;
+        .control-group input[type="number"] {
+            width: 80px;
+            text-align: center;
         }
         
         .color-palette {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 15px;
             margin-bottom: 20px;
         }
         
@@ -54,125 +132,222 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 11px;
+            gap: 6px;
         }
         
         .color-swatch {
-            width: 30px;
-            height: 30px;
-            border-radius: 4px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
-            border: 2px solid #ccc;
-            margin-bottom: 2px;
+            border: 2px solid #bdc3c7;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        .selected {
-            border: 3px solid #000;
+        .color-swatch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .color-swatch.selected {
+            border: 3px solid #e74c3c;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #e74c3c;
         }
         
         .color-label {
-            min-height: 1em;
+            font-size: 0.75em;
+            color: #7f8c8d;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .custom-ral-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .custom-ral-box strong {
+            display: block;
+            margin-bottom: 12px;
+            color: #2c3e50;
+            font-weight: 400;
+        }
+        
+        .custom-ral-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .custom-ral-row input[type="text"] {
+            flex: 1;
+            min-width: 180px;
+            padding: 10px 15px;
+            border: 1px solid #bdc3c7;
+            font-size: 0.95em;
+        }
+        
+        .custom-ral-row input[type="color"] {
+            width: 60px;
+            height: 42px;
+            border: 1px solid #bdc3c7;
+            cursor: pointer;
+        }
+        
+        .custom-ral-box small {
+            display: block;
+            color: #7f8c8d;
+            font-size: 0.85em;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+        
+        #svgContainer {
+            background: white;
+            padding: 40px;
+            border: 1px solid #e0e0e0;
+            margin: 30px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         #svgContainer svg {
             max-width: 100%;
             height: auto;
-            background-color: #ffffff;
             display: block;
-            margin: 10px auto 20px;
         }
         
         .button-container {
-            margin-top: 10px;
             display: flex;
             justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
         }
         
         .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
+            padding: 12px 28px;
+            font-size: 0.9em;
             color: white;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            margin: 5px 0;
             text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            font-weight: 400;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #27ae60;
+        }
+        
+        .btn-primary:hover {
+            background: #229954;
         }
         
         .btn-secondary {
-            background-color: #007bff;
+            background: #95a5a6;
         }
         
-        .btn:hover {
-            opacity: 0.9;
+        .btn-secondary:hover {
+            background: #7f8c8d;
         }
         
-        .btn-retour {
-            position: absolute;
-            top: 30px;
-            left: 100px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 5px 0;
-            text-decoration: none;
+        .btn-update {
+            background: #e74c3c;
+        }
+        
+        .btn-update:hover {
+            background: #c0392b;
+        }
+        
+        .info-badge {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-left: 10px;
         }
     </style>
 </head>
 
 <body>
-    <a href="index.html" class="btn-retour">Retour à l'accueil</a>
+    <header>
+        <a href="index.html" class="btn-retour">← Retour</a>
+        <h1>🎨 Barre 100% personnalisée</h1>
+        <p>
+            Barre composée automatiquement de rayures de 10 cm : 30 rayures pour 3 m, 35 rayures pour 3,50 m. Cliquez sur les rayures pour les colorer avec la couleur sélectionnée.
+        </p>
+    </header>
 
-    <h1>Barre 100% personnalisée</h1>
-    <p>Choisissez le nombre de rayures, leur largeur en cm, les couleurs et ajoutez votre barre au panier.</p>
+    <div class="container">
+        <div class="section">
+            <h2 class="section-title">Configuration de la barre</h2>
 
-    <div class="controls">
-        <div style="margin-bottom: 10px;">
-            <label for="stripeCount">
-                Nombre de rayures :
-                <input type="number" id="stripeCount" min="1" max="20" value="3" style="width: 60px; text-align: center;">
-            </label>
-            <button class="btn btn-secondary" type="button" onclick="updateStripeInputs()">Définir les rayures</button>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="length">Longueur</label>
+                    <select id="length">
+                        <option value="3m">3 m (300 cm)</option>
+                        <option value="3.5m">3,50 m (350 cm)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="quantity">Quantité</label>
+                    <input type="number" id="quantity" min="1" value="1">
+                </div>
+
+                <button class="btn btn-update" id="regenerateBtn" type="button">
+                    Mettre à jour la barre
+                </button>
+            </div>
         </div>
 
-        <div>
-            <label for="length">
-                Longueur :
-                <select id="length">
-                    <option value="3m">3 m (300 cm)</option>
-                    <option value="3.5m">3,50 m (350 cm)</option>
-                </select>
-            </label>
-
-            <label for="quantity">
-                Quantité :
-                <input type="number" id="quantity" min="1" value="1" style="width: 60px; text-align: center;">
-            </label>
-
-            <button class="btn btn-secondary" id="regenerateBtn" type="button">Mettre à jour la barre</button>
+        <div class="section">
+            <h2 class="section-title">Palette de couleurs RAL</h2>
+            <div class="color-palette" id="colorPalette"></div>
         </div>
-    </div>
 
-    <div id="stripeInputs"></div>
-    <div id="totalInfo"></div>
+        <div class="section">
+            <h2 class="section-title">RAL personnalisé</h2>
+            <div class="custom-ral-box">
+                <strong>Vous ne trouvez pas votre RAL dans la palette ?</strong>
+                <div class="custom-ral-row">
+                    <input type="text" id="customRalInput" placeholder="Ex : RAL 3027, RAL 1036, etc.">
+                    <input type="color" id="customRalColor" value="#ff0000">
+                    <button type="button" class="btn btn-secondary" id="addCustomRalBtn">
+                        Ajouter à la palette
+                    </button>
+                </div>
+                <small>
+                    Choisissez la couleur la plus proche de votre RAL. Elle sera ajoutée à la palette pour colorer la barre
+                    et le RAL saisi sera indiqué dans votre panier / devis.
+                </small>
+            </div>
+        </div>
 
-    <div class="color-palette" id="colorPalette"></div>
-    <div id="svgContainer"></div>
+        <div class="section">
+            <h2 class="section-title">Prévisualisation de votre barre</h2>
+            <div id="svgContainer">
+                <p style="color: #95a5a6;">Chargement de la barre...</p>
+            </div>
+        </div>
 
-    <div class="button-container">
-        <button class="btn" onclick="addToCart()">Ajouter au panier</button>
-        <a href="panier.html" class="btn btn-secondary">Voir le panier</a>
+        <div class="button-container">
+            <button class="btn btn-primary" onclick="addToCart()">Ajouter au panier</button>
+            <a href="panier.html" class="btn btn-secondary">Voir le panier</a>
+        </div>
     </div>
 
     <script>
@@ -229,6 +404,20 @@
             return lengthValue === "3.5m" ? 350 : 300;
         }
 
+        // Renvoie la config de rayures : largeur fixe 10 cm, nombre en fonction de la longueur
+        function getStripeConfig() {
+            const barLengthCm = getBarLengthCm();
+            const stripeWidth = 10;
+            const stripeCount = barLengthCm / stripeWidth; // 300/10=30, 350/10=35
+
+            return {
+                stripeWidth,
+                stripeCount,
+                widths: Array(stripeCount).fill(stripeWidth),
+                total_length_cm: barLengthCm
+            };
+        }
+
         // Palette de couleurs AVEC numéro RAL
         function generateColorPalette() {
             const colorPalette = document.getElementById("colorPalette");
@@ -265,87 +454,84 @@
             if (firstSwatch) firstSwatch.classList.add("selected");
         }
 
-        // Création / MAJ des inputs de largeur en cm
-        function updateStripeInputs() {
-            let stripeCount = parseInt(document.getElementById("stripeCount").value);
-            if (isNaN(stripeCount) || stripeCount < 1) stripeCount = 1;
-            if (stripeCount > 20) stripeCount = 20;
-            document.getElementById("stripeCount").value = stripeCount;
+        // Ajoute / met à jour un swatch pour le RAL perso
+        function addOrUpdateCustomRalSwatch() {
+            const ralText = document.getElementById("customRalInput").value.trim();
+            const ralColor = document.getElementById("customRalColor").value;
 
-            const barLengthCm = getBarLengthCm();
-            const container = document.getElementById("stripeInputs");
-            container.innerHTML = "<strong>Largeur des rayures (en cm) :</strong>";
-
-            const baseWidth = Math.floor(barLengthCm / stripeCount);
-            let rest = barLengthCm - baseWidth * (stripeCount - 1);
-
-            for (let i = 1; i <= stripeCount; i++) {
-                const w = (i === stripeCount) ? rest : baseWidth;
-                const div = document.createElement("div");
-                div.innerHTML = `
-                    Rayure ${i} :
-                    <input type="number" id="width-${i}" value="${w}" min="1" style="width:80px; text-align:center;"> cm
-                `;
-                container.appendChild(div);
+            if (!ralText) {
+                alert("Veuillez saisir le numéro de RAL (ex : RAL 3027).");
+                return;
             }
 
-            updateTotalInfo();
-        }
+            const colorPalette = document.getElementById("colorPalette");
+            let existing = document.getElementById("custom-ral-swatch-wrapper");
 
-        function getStripeWidthsCm() {
-            const stripeCount = parseInt(document.getElementById("stripeCount").value);
-            let widths = [];
-            for (let i = 1; i <= stripeCount; i++) {
-                const input = document.getElementById(`width-${i}`);
-                let val = input ? parseInt(input.value) : 0;
-                if (isNaN(val) || val < 1) val = 1;
-                widths.push(val);
+            if (!existing) {
+                existing = document.createElement("div");
+                existing.id = "custom-ral-swatch-wrapper";
+                existing.classList.add("color-item");
+                colorPalette.appendChild(existing);
+            } else {
+                existing.innerHTML = "";
             }
-            return widths;
+
+            const swatch = document.createElement("div");
+            swatch.classList.add("color-swatch");
+            swatch.style.backgroundColor = ralColor;
+            swatch.dataset.color = ralColor;
+            swatch.dataset.customRal = ralText;
+
+            const label = document.createElement("div");
+            label.classList.add("color-label");
+            label.textContent = ralText;
+
+            existing.appendChild(swatch);
+            existing.appendChild(label);
+
+            // Comportement de sélection
+            existing.addEventListener("click", () => {
+                document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
+                swatch.classList.add("selected");
+                selectedColor = ralColor;
+            });
+
+            // Sélectionne automatiquement le RAL perso à la création
+            document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
+            swatch.classList.add("selected");
+            selectedColor = ralColor;
         }
 
-        function updateTotalInfo() {
-            const barLengthCm = getBarLengthCm();
-            const widths = getStripeWidthsCm();
-            const total = widths.reduce((a, b) => a + b, 0);
-            const totalInfo = document.getElementById("totalInfo");
-            totalInfo.textContent = `Total des largeurs : ${total} cm / ${barLengthCm} cm`;
-        }
-
-        // Génération de la barre
+        // Génération de la barre (30 ou 35 rayures de 10 cm)
         function generateBar() {
             const svgContainer = document.getElementById("svgContainer");
             svgContainer.innerHTML = "";
 
-            const barLengthCm = getBarLengthCm();
-            const widths = getStripeWidthsCm();
-            const totalCm = widths.reduce((a, b) => a + b, 0);
-
-            if (totalCm !== barLengthCm) {
-                alert(`La somme des largeurs (${totalCm} cm) doit être égale à la longueur de la barre (${barLengthCm} cm).`);
-                updateTotalInfo();
-                return;
-            }
-
             const xmlns = "http://www.w3.org/2000/svg";
+            const {
+                stripeWidth,
+                stripeCount,
+                total_length_cm
+            } = getStripeConfig();
+
             const svg = document.createElementNS(xmlns, "svg");
-            svg.setAttribute("xmlns", xmlns); // important pour l’affichage en miniature
-            svg.setAttribute("viewBox", `0 0 ${barLengthCm} ${BAR_HEIGHT}`);
+            svg.setAttribute("xmlns", xmlns);
+            svg.setAttribute("viewBox", `0 0 ${total_length_cm} ${BAR_HEIGHT}`);
             svg.setAttribute("width", "100%");
             svg.setAttribute("height", "auto");
 
             let xPosition = 0;
 
-            widths.forEach((w, i) => {
+            for (let i = 0; i < stripeCount; i++) {
                 const rect = document.createElementNS(xmlns, "rect");
                 rect.setAttribute("id", `stripe-${i + 1}`);
                 rect.setAttribute("x", xPosition);
                 rect.setAttribute("y", 0);
-                rect.setAttribute("width", w);
+                rect.setAttribute("width", stripeWidth);
                 rect.setAttribute("height", BAR_HEIGHT);
                 rect.setAttribute("fill", "#ffffff");
-                rect.setAttribute("stroke", "#555555");
-                rect.setAttribute("stroke-width", "0.7");
+                rect.setAttribute("stroke", "#bdc3c7");
+                rect.setAttribute("stroke-width", "0.2");
                 rect.setAttribute("shape-rendering", "crispEdges");
                 rect.style.cursor = "pointer";
 
@@ -354,32 +540,28 @@
                 });
 
                 svg.appendChild(rect);
-                xPosition += w;
-            });
+                xPosition += stripeWidth;
+            }
 
             svgContainer.appendChild(svg);
-            updateTotalInfo();
         }
 
         // Ajouter au panier
         function addToCart() {
             const quantity = parseInt(document.getElementById("quantity").value);
             const length = document.getElementById("length").value;
-            const stripeCount = parseInt(document.getElementById("stripeCount").value);
+            const customRal = document.getElementById("customRalInput").value.trim();
 
             if (!quantity || quantity <= 0) {
                 alert("Veuillez entrer une quantité valide.");
                 return;
             }
 
-            const barLengthCm = getBarLengthCm();
-            const widths = getStripeWidthsCm();
-            const totalCm = widths.reduce((a, b) => a + b, 0);
-
-            if (totalCm !== barLengthCm) {
-                alert(`La somme des largeurs (${totalCm} cm) doit être égale à la longueur de la barre (${barLengthCm} cm) avant d'ajouter au panier.`);
-                return;
-            }
+            const {
+                stripeCount,
+                widths,
+                total_length_cm
+            } = getStripeConfig();
 
             const svgContainer = document.getElementById("svgContainer");
             const svgElement = svgContainer.querySelector("svg");
@@ -400,7 +582,7 @@
             let colorsUsed = [...new Set(
                 Array.from(filledStripes)
                 .map(el => el.getAttribute("fill"))
-                .filter(c => c && c !== "none" && c.toLowerCase() !== "#ffffff" && c.toLowerCase() !== "white")
+                .filter(c => c && c.toLowerCase() !== "#ffffff" && c.toLowerCase() !== "white")
             )];
 
             if (colorsUsed.length === 0) {
@@ -418,7 +600,8 @@
                 svg: svgHtml,
                 stripes: stripeCount,
                 widths_cm: widths,
-                total_length_cm: barLengthCm
+                total_length_cm: total_length_cm,
+                custom_ral: customRal || null
             });
 
             localStorage.setItem("cart", JSON.stringify(cart));
@@ -427,26 +610,11 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             generateColorPalette();
-            updateStripeInputs();
             generateBar();
 
             document.getElementById("regenerateBtn").addEventListener("click", generateBar);
-
-            document.getElementById("stripeCount").addEventListener("change", () => {
-                updateStripeInputs();
-                generateBar();
-            });
-
-            document.getElementById("length").addEventListener("change", () => {
-                updateStripeInputs();
-                generateBar();
-            });
-
-            document.addEventListener("input", (e) => {
-                if (e.target && e.target.id && e.target.id.startsWith("width-")) {
-                    updateTotalInfo();
-                }
-            });
+            document.getElementById("length").addEventListener("change", generateBar);
+            document.getElementById("addCustomRalBtn").addEventListener("click", addOrUpdateCustomRalSwatch);
         });
     </script>
 </body>
