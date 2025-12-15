@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barre 100% personnalisée – Forme 113</title>
+    <title>Barre Octo personnalisée</title>
     <style>
         * {
             margin: 0;
@@ -97,7 +97,7 @@
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
         
         .control-group label {
@@ -137,7 +137,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         
         .color-swatch {
@@ -272,15 +272,25 @@
         .btn-update:hover {
             background: #c0392b;
         }
+        
+        .info-badge {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
     </style>
 </head>
 
 <body>
     <header>
         <a href="index.html" class="btn-retour">← Retour</a>
-        <h1>🎨 Barre 100% personnalisée – Forme 113</h1>
+        <h1>🎨 Barre Octo personnalisée</h1>
         <p>
-            Barre en forme 113 composée automatiquement de rayures de 10 cm : 30 rayures pour 3 m, 35 rayures pour 3,50 m. La barre est affichée ci-dessous, cliquez sur les rayures pour les colorer.
+            Barre composée automatiquement de rayures de 10 cm : 30 rayures pour 3 m, 35 rayures pour 3,50 m. La barre est affichée ci-dessous, cliquez sur les rayures pour les colorer.
         </p>
     </header>
 
@@ -298,11 +308,10 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="height">Hauteur</label>
-                    <select id="height">
-                        <option value="95">95 mm</option>
-                        <option value="145">145 mm</option>
-                        <option value="220">220 mm</option>
+                    <label for="diameter">Diamètre</label>
+                    <select id="diameter">
+                        <option value="5">5 cm</option>
+                        <option value="8">8 cm</option>
                     </select>
                 </div>
 
@@ -395,11 +404,7 @@
         };
 
         let selectedColor = colors[0];
-
-        const SHAPE_X_MIN = 200.3155;
-        const SHAPE_WIDTH = 400.522;
-        const SHAPE_Y_MIN = 200.3155;
-        const SHAPE_HEIGHT = 40.05364;
+        const BAR_HEIGHT = 18;
 
         function getBarLengthCm() {
             const lengthValue = document.getElementById("length").value;
@@ -455,17 +460,12 @@
         }
 
         function addOrUpdateCustomRalSwatch() {
-            const ralTextRaw = document.getElementById("customRalInput").value.trim();
+            const ralText = document.getElementById("customRalInput").value.trim();
             const ralColor = document.getElementById("customRalColor").value;
 
-            if (!ralTextRaw) {
+            if (!ralText) {
                 alert("Veuillez saisir le numéro de RAL (ex : RAL 3027).");
                 return;
-            }
-
-            let ralText = ralTextRaw.toUpperCase().replace(/\s+/g, " ").trim();
-            if (!ralText.startsWith("RAL")) {
-                ralText = "RAL " + ralText;
             }
 
             const colorPalette = document.getElementById("colorPalette");
@@ -508,78 +508,49 @@
             const svgContainer = document.getElementById("svgContainer");
             svgContainer.innerHTML = "";
 
+            const xmlns = "http://www.w3.org/2000/svg";
             const {
-                widths,
+                stripeWidth,
+                stripeCount,
                 total_length_cm
             } = getStripeConfig();
-            const barLengthCm = total_length_cm;
 
-            const svgTotalUnits = SHAPE_WIDTH;
-            let xUnits = SHAPE_X_MIN;
-            let stripesMarkup = "";
+            const svg = document.createElementNS(xmlns, "svg");
+            svg.setAttribute("xmlns", xmlns);
+            svg.setAttribute("viewBox", `0 0 ${total_length_cm} ${BAR_HEIGHT}`);
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "auto");
 
-            widths.forEach((wCm, i) => {
-                const stripeUnitsWidth = (wCm / barLengthCm) * svgTotalUnits;
-                stripesMarkup += `
-                    <rect data-stripe="${i}"
-                          x="${xUnits}"
-                          y="${SHAPE_Y_MIN}"
-                          width="${stripeUnitsWidth}"
-                          height="${SHAPE_HEIGHT}"
-                          fill="#ffffff"
-                          stroke="#bdc3c7"
-                          stroke-width="0.2"
-                          shape-rendering="crispEdges" />
-                `;
-                xUnits += stripeUnitsWidth;
-            });
+            let xPosition = 0;
 
-            const svgMarkup = `
-<svg viewBox="${SHAPE_X_MIN} ${SHAPE_Y_MIN} ${SHAPE_WIDTH} ${SHAPE_HEIGHT}"
-     width="100%" height="auto"
-     xmlns="http://www.w3.org/2000/svg">
-
-  <defs>
-    <clipPath id="barShapeClip">
-      <path
-         d="m 220.64959,220.49723 360.31916,-0.18284 -3.22536,3.60346 -2.32709,3.98622 -1.33592,3.03815 -1.5083,6.85199 -0.10774,2.6072 -343.77008,-0.0667 -1.02082,-8.15132 -3.18435,-6.65819 z" />
-      <path
-         d="m 200.56075,220.47031 c 0.0862,-0.68951 -0.15997,-20.06953 -0.15997,-20.06953 l 400.41959,-0.0986 0.0163,20.05791 z" />
-      <path
-         d="m 219.39295,218.72499 2.80113,3.63069 357.1007,-0.37707 3.18898,-3.66302 z" />
-    </clipPath>
-  </defs>
-
-  <g clip-path="url(#barShapeClip)">
-    ${stripesMarkup}
-  </g>
-
-  <g fill="none" stroke="#000000" stroke-width="0.631" stroke-linecap="round">
-    <path d="m 228.63699,240.36812 a 28.321171,28.321171 0 0 0 -8.29508,-20.02609" />
-    <path d="m 220.3415,220.3425 h -20.026" />
-    <path d="m 200.3155,220.3425 v -20.027" />
-    <path d="m 200.3155,200.3155 h 400.522" />
-    <path d="m 600.8375,220.3425 v -20.027" />
-    <path d="m 600.8375,220.3425 h -20.026" />
-    <path d="m 580.81157,220.34203 a 28.321171,28.321171 0 0 0 -8.29508,20.02609" />
-    <path d="M 228.63672 240.36914 L 572.51562 240.36914 L 228.63672 240.36914 z" />
-  </g>
-</svg>`;
-
-            svgContainer.innerHTML = svgMarkup;
-
-            svgContainer.querySelectorAll("rect[data-stripe]").forEach(rect => {
+            for (let i = 0; i < stripeCount; i++) {
+                const rect = document.createElementNS(xmlns, "rect");
+                rect.setAttribute("id", `stripe-${i + 1}`);
+                rect.setAttribute("x", xPosition);
+                rect.setAttribute("y", 0);
+                rect.setAttribute("width", stripeWidth);
+                rect.setAttribute("height", BAR_HEIGHT);
+                rect.setAttribute("fill", "#ffffff");
+                rect.setAttribute("stroke", "#bdc3c7");
+                rect.setAttribute("stroke-width", "0.2");
+                rect.setAttribute("shape-rendering", "crispEdges");
                 rect.style.cursor = "pointer";
+
                 rect.addEventListener("click", () => {
                     rect.setAttribute("fill", selectedColor);
                 });
-            });
+
+                svg.appendChild(rect);
+                xPosition += stripeWidth;
+            }
+
+            svgContainer.appendChild(svg);
         }
 
         function addToCart() {
             const quantity = parseInt(document.getElementById("quantity").value);
             const length = document.getElementById("length").value;
-            const height = document.getElementById("height").value;
+            const diameter = document.getElementById("diameter").value;
             const customRal = document.getElementById("customRalInput").value.trim();
 
             if (!quantity || quantity <= 0) {
@@ -602,12 +573,13 @@
             }
 
             const svgHtml = svgElement.outerHTML;
+
             if (!svgHtml || svgHtml.trim() === "") {
                 alert("Erreur : la barre n'a pas pu être générée.");
                 return;
             }
 
-            const filledStripes = svgContainer.querySelectorAll("rect[data-stripe]");
+            const filledStripes = svgContainer.querySelectorAll("svg rect[fill]");
             let colorsUsed = [...new Set(
                 Array.from(filledStripes)
                 .map(el => el.getAttribute("fill"))
@@ -622,11 +594,11 @@
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
             cart.push({
-                model: "BARRE 113 PERSONNALISÉE",
+                model: "BARRE_OCTO_PERSONNALISABLE",
                 colors: colorsUsed,
                 quantity: quantity,
                 length: length,
-                height: height + " mm",
+                diameter: diameter + " cm",
                 svg: svgHtml,
                 stripes: stripeCount,
                 widths_cm: widths,
@@ -635,7 +607,7 @@
             });
 
             localStorage.setItem("cart", JSON.stringify(cart));
-            alert("Barre personnalisée ajoutée au panier !");
+            alert("Barre Octo personnalisée ajoutée au panier !");
         }
 
         document.addEventListener("DOMContentLoaded", () => {

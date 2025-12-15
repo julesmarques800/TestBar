@@ -345,7 +345,6 @@
 
             <div class="bottom-actions">
                 <a href="index.html" class="btn btn-secondary">← Retour à l'accueil</a>
-                <a href="choix_pack.html" class="btn btn-secondary">← Retour Pack</a>
                 <a href="devis.html" class="btn btn-success">Envoyer le devis →</a>
             </div>
         </div>
@@ -500,6 +499,8 @@
                     <div class="item-details">
                         <div class="item-model">Modèle ${item.model}</div>
                         <div class="item-length">📏 Longueur : ${item.length || "Non spécifié"}</div>
+                        ${item.height ? `<div class="item-length">📐 Hauteur : ${item.height}</div>` : ''}
+                        ${item.diameter ? `<div class="item-length">⭕ Diamètre : ${item.diameter}</div>` : ''}
                         <div class="color-box">${colorBoxes}</div>
                     </div>
                     <div class="item-actions">
@@ -541,6 +542,7 @@
                         <div class="item-details">
                             <div class="item-model">Modèle ${bar.model}</div>
                             <div class="item-length">📏 Longueur : ${bar.length || "Non spécifié"}</div>
+                            ${bar.height ? `<div class="item-length">📐 Hauteur : ${bar.height}</div>` : ''}
                             <div class="color-box">${colorBoxes}</div>
                         </div>
                         <div class="item-actions">

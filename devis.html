@@ -17,7 +17,6 @@
             background-color: #f5f5f5;
             color: #2c3e50;
         }
-        /* Header */
         
         header {
             background: #2c3e50;
@@ -50,7 +49,6 @@
         .brand-line span {
             font-weight: 600;
         }
-        /* Conteneur principal */
         
         .container {
             max-width: 1300px;
@@ -68,7 +66,6 @@
             padding-bottom: 8px;
             border-bottom: 2px solid #e74c3c;
         }
-        /* Formulaire */
         
         form {
             width: 100%;
@@ -100,7 +97,6 @@
             font-size: 0.95em;
             font-family: inherit;
         }
-        /* Numéro de devis */
         
         .devis-info {
             margin-bottom: 20px;
@@ -121,7 +117,6 @@
             font-weight: 600;
             color: #e74c3c;
         }
-        /* Bloc stats (comme panier) */
         
         #statsContainer {
             margin: 0 0 18px 0;
@@ -135,24 +130,16 @@
         #statsContainer strong {
             font-weight: 600;
         }
-        /* Bloc récap commande */
         
         .order-summary {
             margin-top: 15px;
-        }
-        
-        .order-summary h2 {
-            font-size: 1.1em;
-            font-weight: 500;
-            margin-top: 15px;
-            margin-bottom: 8px;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            margin-top: 5px;
+            margin-top: 15px;
             font-size: 0.9em;
         }
         
@@ -169,7 +156,6 @@
             color: white;
             font-weight: 500;
         }
-        /* Cellule image + barres */
         
         .svg-container-td {
             width: 120px;
@@ -181,7 +167,6 @@
         .svg-container-td img {
             width: 100%;
             max-height: 20px;
-            /* barre fine et dézoomée */
             object-fit: contain;
             display: block;
         }
@@ -213,7 +198,6 @@
             color: #333;
             font-weight: 600;
         }
-        /* Bouton + loading */
         
         .actions {
             margin-top: 20px;
@@ -249,7 +233,6 @@
             color: #7f8c8d;
             margin-top: 8px;
         }
-        /* Footer */
         
         footer {
             text-align: center;
@@ -281,12 +264,11 @@
         </div>
         <h1>Devis</h1>
         <p>
-            Renseignez le nom, le prénom et la date de livraison souhaitée. Téléchargez ensuite votre devis en PDF. Le numéro de devis s’incrémente automatiquement à chaque génération.
+            Renseignez le nom, le prénom et la date de livraison souhaitée. Téléchargez ensuite votre devis en PDF. Le numéro de devis s'incrémente automatiquement à chaque génération.
         </p>
     </header>
 
     <main class="container">
-        <!-- Zone qui sera convertie en PDF -->
         <div id="pdfContent">
             <div class="devis-info">
                 <div>
@@ -316,7 +298,6 @@
                     </div>
                 </div>
 
-                <!-- Statistiques comme dans le panier -->
                 <div id="statsContainer">
                     <strong>📊 Statistiques :</strong><br>
                     <span id="count3m">0</span> barres de <strong>3 m</strong><br>
@@ -326,7 +307,6 @@
                 <div class="order-summary">
                     <div class="section-title">Votre sélection</div>
 
-                    <h2>🔹 Barres individuelles</h2>
                     <table>
                         <thead>
                             <tr>
@@ -334,29 +314,12 @@
                                 <th>Modèle</th>
                                 <th>Couleurs</th>
                                 <th>Longueur</th>
+                                <th>Hauteur</th>
+                                <th>Diamètre</th>
                                 <th>Quantité</th>
                             </tr>
                         </thead>
-                        <tbody id="individualOrderTable">
-                            <!-- Barres individuelles ajoutées dynamiquement -->
-                        </tbody>
-                    </table>
-
-                    <h2>📦 Packs de barres</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Pack</th>
-                                <th>Image</th>
-                                <th>Modèle</th>
-                                <th>Couleurs</th>
-                                <th>Longueur</th>
-                                <th>Quantité</th>
-                            </tr>
-                        </thead>
-                        <tbody id="packsOrderTable">
-                            <!-- Packs de barres ajoutés dynamiquement -->
-                        </tbody>
+                        <tbody id="orderTable"></tbody>
                     </table>
                 </div>
             </form>
@@ -372,11 +335,9 @@
         © 2025 EQUINOX - Créateur d'espaces équestres
     </footer>
 
-    <!-- html2pdf (pour générer le PDF côté client) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
     <script>
-        // Mapping hex -> RAL
         const hexToRal = {
             "#d0b084": "RAL 1001",
             "#ddc49a": "RAL 1014",
@@ -435,7 +396,6 @@
             updateDevisNumberDisplay();
         }
 
-        // Affichage de la date du jour (date du devis)
         function updateDevisDate() {
             const now = new Date();
             const options = {
@@ -448,7 +408,6 @@
             if (el) el.textContent = "Date du devis : " + frDate;
         }
 
-        // Génère le HTML des couleurs (gère RAL perso via custom_ral)
         function makeColorsHtml(colors, customRal) {
             if (!colors) return "";
             return colors.map(c => {
@@ -463,23 +422,14 @@
             }).join("");
         }
 
-        // Stats comme sur la page panier
         function updateStats(cart) {
             let count3m = 0;
             let count35m = 0;
 
             cart.forEach(item => {
-                if (!item.items) {
-                    const qty = item.quantity ? item.quantity : 1;
-                    if (item.length === "3m") count3m += qty;
-                    if (item.length === "3.5m") count35m += qty;
-                } else {
-                    item.items.forEach(bar => {
-                        const qty = bar.quantity ? bar.quantity : 1;
-                        if (bar.length === "3m") count3m += qty;
-                        if (bar.length === "3.5m") count35m += qty;
-                    });
-                }
+                const qty = item.quantity || 1;
+                if (item.length === "3m") count3m += qty;
+                if (item.length === "3.5m") count35m += qty;
             });
 
             const total = count3m + count35m;
@@ -489,7 +439,6 @@
             document.getElementById("countTotal").textContent = total;
         }
 
-        // Construit une <img> data URL à partir du SVG enregistré dans le panier
         function svgToImgHtml(svgString, altText) {
             if (!svgString) return "❌ Erreur SVG";
             const encoded = encodeURIComponent(svgString);
@@ -499,66 +448,36 @@
         function loadOrderSummary() {
             console.log("📦 Chargement du résumé de commande...");
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const individualOrderTable = document.getElementById("individualOrderTable");
-            const packsOrderTable = document.getElementById("packsOrderTable");
+            const orderTable = document.getElementById("orderTable");
 
-            individualOrderTable.innerHTML = "";
-            packsOrderTable.innerHTML = "";
-
+            orderTable.innerHTML = "";
             updateStats(cart);
 
             if (cart.length === 0) {
-                const row1 = document.createElement("tr");
-                row1.innerHTML = `<td colspan="5">Aucun article dans le panier.</td>`;
-                individualOrderTable.appendChild(row1);
-
-                const row2 = document.createElement("tr");
-                row2.innerHTML = `<td colspan="6">Aucun pack dans le panier.</td>`;
-                packsOrderTable.appendChild(row2);
-
+                const row = document.createElement("tr");
+                row.innerHTML = `<td colspan="7">Aucun article dans le panier.</td>`;
+                orderTable.appendChild(row);
                 console.log("ℹ️ Panier vide pour le devis.");
                 return;
             }
 
-            // Barres individuelles
             cart.forEach(item => {
-                if (!item.items) {
-                    const imgHtml = svgToImgHtml(item.svg, `Modèle ${item.model}`);
-                    const colorsHtml = makeColorsHtml(item.colors, item.custom_ral || null);
+                const imgHtml = svgToImgHtml(item.svg, `Modèle ${item.model}`);
+                const colorsHtml = makeColorsHtml(item.colors, item.custom_ral || null);
+                const heightDisplay = item.height || "-";
+                const diameterDisplay = item.diameter || "-";
 
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td class="svg-container-td">
-                            ${imgHtml}
-                        </td>
-                        <td>Modèle ${item.model}</td>
-                        <td><div class="color-box">${colorsHtml}</div></td>
-                        <td>${item.length || "Non spécifié"}</td>
-                        <td>${item.quantity}</td>
-                    `;
-                    individualOrderTable.appendChild(row);
-                }
-            });
-
-            // Packs
-            cart.forEach((item) => {
-                        if (item.items) {
-                            item.items.forEach((bar, subIndex) => {
-                                        const imgHtmlPack = svgToImgHtml(bar.svg, `Modèle ${bar.model}`);
-                                        const colorsHtml = makeColorsHtml(bar.colors, bar.custom_ral || item.custom_ral || null);
-
-                                        const packRow = document.createElement("tr");
-                                        packRow.innerHTML = `
-                            ${subIndex === 0 ? `<td rowspan="${item.items.length}">Pack de ${item.packSize} barres</td>` : ""}
-                            <td class="svg-container-td">${imgHtmlPack}</td>
-                            <td>Modèle ${bar.model}</td>
-                            <td><div class="color-box">${colorsHtml}</div></td>
-                            <td>${bar.length || "Non spécifié"}</td>
-                            <td>${bar.quantity}</td>
-                        `;
-                        packsOrderTable.appendChild(packRow);
-                    });
-                }
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="svg-container-td">${imgHtml}</td>
+                    <td>Modèle ${item.model}</td>
+                    <td><div class="color-box">${colorsHtml}</div></td>
+                    <td>${item.length || "Non spécifié"}</td>
+                    <td>${heightDisplay}</td>
+                    <td>${diameterDisplay}</td>
+                    <td>${item.quantity}</td>
+                `;
+                orderTable.appendChild(row);
             });
 
             console.log("✅ Résumé du devis chargé avec succès !");
@@ -588,11 +507,14 @@
             downloadBtn.disabled = true;
             loadingText.style.display = "block";
 
-            // Met à jour la ligne info client dans le PDF
             const infoBloc = document.getElementById("devisDateDisplay");
             if (infoBloc) {
                 const now = new Date();
-                const frNow = now.toLocaleDateString('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                const frNow = now.toLocaleDateString('fr-FR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
                 infoBloc.textContent = `Date du devis : ${frNow} – Client : ${firstName} ${lastName} – Livraison souhaitée : ${deliveryDate}`;
             }
 
@@ -600,9 +522,18 @@
             const opt = {
                 margin: 10,
                 filename: fileName,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 1 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 1
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
             };
 
             try {
